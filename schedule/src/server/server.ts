@@ -17,8 +17,13 @@ const server = {
     return response;
   },
 
+<<<<<<< HEAD
   getEventById: async (eventId: string): Promise<IEvent | Error> => {
     const url = urls.getEventById(eventId);
+=======
+  findEventById: async (eventId: string): Promise<IEvent | Error> => {
+    const url = urls.findEventById(eventId);
+>>>>>>> feature/S-2-serverCommunication(handle errors)
     const response = await getRequest(url);
     return response;
   },
