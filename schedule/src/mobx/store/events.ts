@@ -11,18 +11,17 @@ class Events {
     this.getEvents();
   }
 
-  events: Array<IEvent> | null;
+  events: IEvent[] | null;
 
   error: Error | null;
 
-  getEvents() {
-    server.getAllEvents().then((response: Array<IEvent> | Error) => {
-      if (response instanceof Error) {
-        this.error = response;
-      } else {
-        this.events = response;
-      }
-    });
+  async getEvents() {
+    try {
+      const allEvents = await server.getAllEvents();
+      this.events = allEvents;
+    } catch (e) {
+      this.error = e;
+    }
   }
 }
 
