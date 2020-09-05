@@ -2,8 +2,8 @@ import React from 'react';
 import { Provider } from 'mobx-react';
 
 import Settings from './mobx/settings';
-import './App.css';
 import Test from './components/Test/Test';
+import './App.css';
 
 const settings = new Settings();
 

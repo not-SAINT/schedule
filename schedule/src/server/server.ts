@@ -39,6 +39,7 @@ const server = {
     const url = urls.getAllOrganizers();
     const allOrganizers: IAllOrganizer | Error = await getRequest(url);
     const organizers = allOrganizers instanceof Error ? allOrganizers : allOrganizers.data;
+
     return organizers;
   },
 

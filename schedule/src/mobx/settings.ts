@@ -1,11 +1,13 @@
 import { observable, configure, decorate, action } from 'mobx';
+
 import { ISettings, ITaskFilter, IColumnFilter } from '../interfaces/settings/settings';
+import { ScheduleView, LOCAL_SETTINGS, DEFAULT_TIMEZONE } from '../constants/settings';
 
 configure({ enforceActions: 'observed' });
 
 const initSettings: ISettings = {
-  viewMode: 'table',
-  timeZone: 180,
+  viewMode: ScheduleView.Table,
+  timeZone: DEFAULT_TIMEZONE,
   addEventButton: false,
   course: 'RS',
   hideOldEvents: false,
@@ -36,7 +38,7 @@ class Settings {
   settings: ISettings;
 
   getSettings() {
-    const localSettings = localStorage.getItem('scheduleSettings');
+    const localSettings = localStorage.getItem(LOCAL_SETTINGS);
     if (localSettings !== null) {
       this.settings = JSON.parse(localSettings);
     }
@@ -46,13 +48,13 @@ class Settings {
     localStorage.setItem('scheduleSettings', JSON.stringify(this.settings));
   }
 
-  setViewMode(mode: string) {
+  setViewMode(mode: ScheduleView) {
     this.settings.viewMode = mode;
     this.setSettings();
   }
 
-  setTimeZone(timeZone: number) {
-    this.settings.timeZone = timeZone;
+  setTimeZone(newTimeZone: number) {
+    this.settings.timeZone = newTimeZone;
     this.setSettings();
   }
 
