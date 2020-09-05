@@ -1,7 +1,7 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from '../helpers/fetch-utils';
 import urls from '../constants/urls';
 
-import { IEvent, IOrganizer, IAllEvents } from '../interfaces/serverData/serverData';
+import { IEvent, IOrganizer, IAllEvents, IAllOrganizer } from '../interfaces/serverData/serverData';
 
 const server = {
   getAllEvents: async (): Promise<Array<IEvent> | Error> => {
@@ -37,8 +37,10 @@ const server = {
 
   getAllOrganizers: async (): Promise<Array<IOrganizer> | Error> => {
     const url = urls.getAllOrganizers();
-    const allOrganizers = await getRequest(url);
-    return allOrganizers;
+    const allOrganizers: IAllOrganizer | Error = await getRequest(url);
+    const organizers = allOrganizers instanceof Error ? allOrganizers : allOrganizers.data;
+
+    return organizers;
   },
 
   addNewOganizer: async (newOrganizer: IOrganizer) => {

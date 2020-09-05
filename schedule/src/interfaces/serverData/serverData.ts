@@ -18,3 +18,7 @@ export interface IOrganizer {
 export interface IAllEvents {
   data: Array<IEvent>;
 }
+
+export interface IAllOrganizer {
+  data: Array<IOrganizer>;
+}
