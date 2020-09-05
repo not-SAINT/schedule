@@ -1,6 +1,6 @@
 import { observable, configure, decorate, action } from 'mobx';
-import server from '../server/server';
-import { IOrganizer } from '../interfaces/serverData/serverData';
+import server from '../../server/server';
+import { IOrganizer } from '../../interfaces/serverData/serverData';
 
 configure({ enforceActions: 'observed' });
 
