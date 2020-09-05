@@ -1,7 +1,7 @@
 import { observable, configure, decorate, action } from 'mobx';
 
-import { ISettings, ITaskFilter, IColumnFilter } from '../interfaces/settings/settings';
-import { ScheduleView, LOCAL_SETTINGS, DEFAULT_TIMEZONE } from '../constants/settings';
+import { ISettings, ITaskFilter, IColumnFilter } from '../../interfaces/settings/settings';
+import { ScheduleView, LOCAL_SETTINGS, DEFAULT_TIMEZONE } from '../../constants/settings';
 
 configure({ enforceActions: 'observed' });
 
