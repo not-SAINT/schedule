@@ -10,7 +10,7 @@ const urls = {
   deleteEventById: (eventId: string): string =>
     `https://re-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/event/${eventId}`,
   getAllOrganizers: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/organizers`,
-  addNewOganizer: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/organizer`,
+  addNewOrganizer: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/organizer`,
   getOrganizerById: (organizerId: string): string =>
     `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/organizer/${organizerId}`,
   updateExistingOrganizer: (organizerId: string): string =>

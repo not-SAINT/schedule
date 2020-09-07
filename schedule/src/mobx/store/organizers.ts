@@ -11,18 +11,17 @@ class Organizers {
     this.getOrganizers();
   }
 
-  organizers: Array<IOrganizer> | null;
+  organizers: IOrganizer[] | null;
 
   error: Error | null;
 
-  getOrganizers() {
-    server.getAllOrganizers().then((response: Array<IOrganizer> | Error) => {
-      if (response instanceof Error) {
-        this.error = response;
-      } else {
-        this.organizers = response;
-      }
-    });
+  async getOrganizers() {
+    try {
+      const allEvents = await server.getAllOrganizers();
+      this.organizers = allEvents;
+    } catch (e) {
+      this.error = e;
+    }
   }
 }
 

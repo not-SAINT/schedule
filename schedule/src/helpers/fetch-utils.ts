@@ -1,58 +1,46 @@
 import serverError from './error';
 
-export const getRequest = async (url: string): Promise<any> => {
-  try {
-    const rawResponse = await fetch(url);
-    if (rawResponse.ok) {
-      return await rawResponse.json();
-    }
-    return serverError(String(rawResponse.status));
-  } catch (err) {
-    return err;
+export const getRequest = async <T>(url: string): Promise<T> => {
+  const rawResponse = await fetch(url);
+  if (rawResponse.ok) {
+    const response = await rawResponse.json();
+    return response;
   }
+  throw serverError(String(rawResponse.status));
 };
 
-export const postRequest = async (url: string, body: string): Promise<any> => {
-  try {
-    const rawResponse = await fetch(url, {
-      method: 'POST',
-      body,
-    });
+export const postRequest = async <T>(url: string, body: string): Promise<T> => {
+  const rawResponse = await fetch(url, {
+    method: 'POST',
+    body,
+  });
 
-    if (rawResponse.ok) {
-      return await rawResponse.json();
-    }
-    return serverError(String(rawResponse.status));
-  } catch (err) {
-    return err;
+  if (rawResponse.ok) {
+    const response = await rawResponse.json();
+    return response;
   }
+  throw serverError(String(rawResponse.status));
 };
 
-export const putRequest = async (url: string, body: string): Promise<any> => {
-  try {
-    const rawResponse = await fetch(url, {
-      method: 'PUT',
-      body,
-    });
-    if (rawResponse.ok) {
-      return await rawResponse.json();
-    }
-    return serverError(String(rawResponse.status));
-  } catch (err) {
-    return err;
+export const putRequest = async <T>(url: string, body: string): Promise<T> => {
+  const rawResponse = await fetch(url, {
+    method: 'PUT',
+    body,
+  });
+  if (rawResponse.ok) {
+    const response = await rawResponse.json();
+    return response;
   }
+  throw serverError(String(rawResponse.status));
 };
 
-export const deleteRequest = async (url: string): Promise<any> => {
-  try {
-    const rawResponse = await fetch(url, {
-      method: 'DELETE',
-    });
-    if (rawResponse.ok) {
-      return await rawResponse.json();
-    }
-    return serverError(String(rawResponse.status));
-  } catch (err) {
-    return err;
+export const deleteRequest = async <T>(url: string): Promise<T> => {
+  const rawResponse = await fetch(url, {
+    method: 'DELETE',
+  });
+  if (rawResponse.ok) {
+    const response = await rawResponse.json();
+    return response;
   }
+  throw serverError(String(rawResponse.status));
 };
