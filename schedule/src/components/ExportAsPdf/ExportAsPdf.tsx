@@ -16,6 +16,7 @@ const ExportASPdf = React.forwardRef(
       const inputHeightMm = pxToMm(input.offsetHeight);
       const a4WidthMm = 210;
       const a4HeightMm = 297;
+      const indent = 16;
 
       html2canvas(input).then((canvas: any) => {
         const imgData = canvas.toDataURL('image/png');
@@ -23,7 +24,7 @@ const ExportASPdf = React.forwardRef(
         // Document of a4WidthMm wide and inputHeightMm high
         if (inputHeightMm > a4HeightMm) {
           // elongated a4 (system print dialog will handle page breaks)
-          const pdf = new JsPDF(orientation, 'mm', [inputHeightMm + 16, a4WidthMm]);
+          const pdf = new JsPDF(orientation, 'mm', [inputHeightMm + indent, a4WidthMm]);
           pdf.addImage(imgData, 'PNG', 5, 5, 0, 0);
           pdf.save(`${label}.pdf`);
         } else {
