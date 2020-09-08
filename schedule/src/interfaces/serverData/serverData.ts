@@ -8,6 +8,9 @@ export interface IEvent {
   dateTime: string;
   place: string;
   comment: string;
+  deadline?: string;
+  hours?: string;
+  isEdited?: boolean;
 }
 
 export interface IOrganizer {
