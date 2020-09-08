@@ -1,10 +1,5 @@
 import { ScheduleView } from '../../constants/settings';
 
-export interface ITaskFilter {
-  tasks: boolean;
-  tests: boolean;
-}
-
 export interface IColumnFilter {
   info: boolean;
   type: boolean;
@@ -20,10 +15,10 @@ export interface IColumnFilter {
 export interface ISettings {
   viewMode: ScheduleView;
   timeZone: number;
-  addEventButton: boolean;
+  isShowAddEventButton: boolean;
   course: string;
-  hideOldEvents: boolean;
-  editModeSwitcher: boolean;
-  tasksFilter: ITaskFilter;
+  isHideOldEvents: boolean;
+  isEditModeOn: boolean;
+  tasksFilter: { [index: string]: boolean };
   columnsFilter: IColumnFilter;
 }
