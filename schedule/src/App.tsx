@@ -12,12 +12,7 @@ const settings = new Settings();
 const App = () => {
   return (
     <Provider settings={settings}>
-      <ErrorBoundary
-        FallbackComponent={ErrorFallback}
-        onReset={() => {
-          // reset the state of your app so the error doesn't happen again
-        }}
-      >
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
         <Test />
       </ErrorBoundary>
     </Provider>
