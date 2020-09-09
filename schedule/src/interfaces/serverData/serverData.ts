@@ -21,3 +21,7 @@ export interface IOrganizer {
 export interface IAllEvents {
   data: Array<IEvent>;
 }
+
+export interface IAllOrganizers {
+  data: Array<IOrganizer>;
+}
