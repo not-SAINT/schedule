@@ -1,5 +1,5 @@
 import React from 'react';
-import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import { YMaps, Map, Placemark, SearchControl } from 'react-yandex-maps';
 
 interface MapProps {
   lat: number;
@@ -8,9 +8,10 @@ interface MapProps {
 
 const YanMap: React.FC<MapProps> = (coords) => {
   return (
-    <YMaps>
+    <YMaps query={{ apikey: '9d0214b0-7d03-4e6b-9632-373c90a90e0c' }}>
       <Map defaultState={{ center: [coords.lat, coords.lng], zoom: 12 }} width="100%" height="100%">
         <Placemark geometry={[coords.lat, coords.lng]} />
+        <SearchControl options={{ float: 'right' }} />
       </Map>
     </YMaps>
   );
