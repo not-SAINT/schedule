@@ -1,6 +1,6 @@
 import { observable, configure, decorate, action } from 'mobx';
 
-import { ISettings, ITaskFilter, IColumnFilter } from '../../interfaces/settings/settings';
+import { ISettings, IColumnFilter } from '../../interfaces/settings/settings';
 import { ScheduleView, LOCAL_SETTINGS, DEFAULT_TIMEZONE } from '../../constants/settings';
 
 configure({ enforceActions: 'observed' });
@@ -8,13 +8,13 @@ configure({ enforceActions: 'observed' });
 const initSettings: ISettings = {
   viewMode: ScheduleView.Table,
   timeZone: DEFAULT_TIMEZONE,
-  addEventButton: false,
+  isShowAddEventButton: false,
   course: 'RS',
-  hideOldEvents: false,
-  editModeSwitcher: false,
+  isHideOldEvents: false,
+  isEditModeOn: false,
   tasksFilter: {
-    tasks: true,
-    tests: true,
+    tasks: false,
+    tests: false,
   },
   columnsFilter: {
     info: true,
@@ -37,56 +37,58 @@ class Settings {
 
   settings: ISettings;
 
-  getSettings() {
+  getSettings = () => {
     const localSettings = localStorage.getItem(LOCAL_SETTINGS);
     if (localSettings !== null) {
       this.settings = JSON.parse(localSettings);
     }
-  }
+  };
 
-  setSettings() {
-    localStorage.setItem('scheduleSettings', JSON.stringify(this.settings));
-  }
+  setSettings = () => {
+    localStorage.setItem(LOCAL_SETTINGS, JSON.stringify(this.settings));
+  };
 
-  setViewMode(mode: ScheduleView) {
+  setViewMode = (mode: ScheduleView) => {
     this.settings.viewMode = mode;
     this.setSettings();
-  }
+  };
 
-  setTimeZone(newTimeZone: number) {
+  setTimeZone = (newTimeZone: number) => {
     this.settings.timeZone = newTimeZone;
     this.setSettings();
-  }
+  };
 
-  setCourse(course: string) {
+  setCourse = (course: string) => {
     this.settings.course = course;
     this.setSettings();
-  }
+  };
 
-  toggleHideOldEvents() {
-    this.settings.hideOldEvents = !this.settings.hideOldEvents;
+  toggleHideOldEvents = () => {
+    this.settings.isHideOldEvents = !this.settings.isHideOldEvents;
     this.setSettings();
-  }
+  };
 
-  toggleEditModeSwitcher() {
-    this.settings.editModeSwitcher = !this.settings.editModeSwitcher;
+  toggleEditModeSwitcher = () => {
+    this.settings.isEditModeOn = !this.settings.isEditModeOn;
     this.setSettings();
-  }
+  };
 
-  setTaskFilter(taskFilter: ITaskFilter) {
-    this.settings.tasksFilter = taskFilter;
+  setTaskFilter = (taskFilter: string[]) => {
+    Object.keys(this.settings.tasksFilter).forEach((taskType: string) => {
+      this.settings.tasksFilter[taskType] = taskFilter.includes(taskType.toString());
+    });
     this.setSettings();
-  }
+  };
 
-  setColumnFilter(columnFilter: IColumnFilter) {
+  setColumnFilter = (columnFilter: IColumnFilter) => {
     this.settings.columnsFilter = columnFilter;
     this.setSettings();
-  }
+  };
 
-  settingsReset() {
+  settingsReset = () => {
     this.settings = initSettings;
     this.setSettings();
-  }
+  };
 }
 
 decorate(Settings, {
