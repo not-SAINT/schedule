@@ -7,15 +7,15 @@ interface ITaskUrlIco {
 
 const TaskUrlIco: React.FC<ITaskUrlIco> = ({ url }: ITaskUrlIco): React.ReactElement => {
   const lowerUrl = url.toLowerCase();
-  const isGithubLink = lowerUrl.indexOf('github');
-  const isYoutubeLink = lowerUrl.indexOf('youtube');
-  const isYoutubeLink2 = lowerUrl.indexOf('youtu.be');
+  const isGithubLink = lowerUrl.includes('github');
+  const isYoutubeLink = lowerUrl.includes('youtube');
+  const isYoutubeLink2 = lowerUrl.includes('youtu.be');
 
-  if (isGithubLink > 0) {
+  if (isGithubLink) {
     return <GithubOutlined />;
   }
 
-  if (isYoutubeLink > 0 || isYoutubeLink2 > 0) {
+  if (isYoutubeLink || isYoutubeLink2) {
     return <YoutubeOutlined />;
   }
 

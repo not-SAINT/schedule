@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { observer } from 'mobx-react';
 import { Table, Tag, Tooltip } from 'antd';
 import { InfoCircleOutlined, BulbTwoTone, ClockCircleOutlined } from '@ant-design/icons';
+import { Link } from 'react-router-dom';
 
 import useStores from '../../mobx/context';
 import { IEvent } from '../../interfaces/serverData/serverData';
@@ -122,7 +123,15 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             width="9%"
           />
         )}
-        <Column title="Name" dataIndex="name" key="name" width="25%" />
+        <Column
+          title="Name"
+          dataIndex="name"
+          key="id"
+          width="25%"
+          render={(name, event: IEvent) => (
+            <Link to={{ pathname: `/task/${name}_${event.id}`, state: { testvalue: event } }}>{name}</Link>
+          )}
+        />
         {columnsFilter.url && (
           <Column
             title="Url"

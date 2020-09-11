@@ -1,9 +1,11 @@
 import React from 'react';
 import { Provider } from 'mobx-react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Settings from './mobx/store/settings';
 import ErrorFallback from './components/ErrorFallback';
+import TestComponent from './components/TestComponent';
 import ScheduleTable from './components/ScheduleTable';
 import ControlPanel from './components/ControlPanel';
 import { IEvent } from './interfaces/serverData/serverData';
@@ -97,11 +99,22 @@ const tasks = addDeadlineEvents(fakeScheduleTasks);
 const App = (): React.ReactElement => {
   return (
     <Provider settings={settings}>
-      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-        <div />
-      </ErrorBoundary>
-      <ControlPanel />
-      <ScheduleTable data={tasks} />
+      <BrowserRouter>
+        <Switch>
+          <Route
+            exact
+            path="/"
+            component={() => (
+              <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
+                <ControlPanel />
+                <ScheduleTable data={tasks} />
+              </ErrorBoundary>
+            )}
+          />
+          <Route path="/task/:name_id" component={TestComponent} />
+          <Redirect to="/" />
+        </Switch>
+      </BrowserRouter>
     </Provider>
   );
 };
