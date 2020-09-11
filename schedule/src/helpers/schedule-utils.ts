@@ -1,4 +1,5 @@
-import { EVENT_PALETTE, TaskType } from '../constants/settings';
+import { EVENT_PALETTE, TaskType, DEADLINE } from '../constants/settings';
+import { IEvent } from '../interfaces/serverData/serverData';
 
 export const getTimeLeft = (deadline: number): string => {
   const now = Date.now();
@@ -11,7 +12,7 @@ export const getTimeLeft = (deadline: number): string => {
   }
 
   if (timeLeft < 0) {
-    return 'Expired';
+    return '';
   }
 
   if (daysLeft >= 1) {
@@ -35,4 +36,18 @@ export const getSpecTags = (comment: string): string[] | '' => {
 
 export const getTagColorByEventType = (taskType: TaskType): string => {
   return EVENT_PALETTE[taskType];
+};
+
+export const addDeadlineEvents = (data: IEvent[]): IEvent[] => {
+  const tasksWithDeadline = data.filter(({ deadline }) => deadline > 0);
+  const deadlineVirtualTasks = tasksWithDeadline.map((task, index) => {
+    return {
+      ...task,
+      dateTime: task.deadline,
+      type: DEADLINE,
+      id: `${Date.now() + index}`,
+    };
+  });
+
+  return data.concat(deadlineVirtualTasks);
 };

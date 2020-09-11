@@ -8,7 +8,7 @@ export interface IEvent {
   dateTime: number;
   place: string;
   comment: string;
-  deadline?: number;
+  deadline: number;
   hours?: string;
   lastUpdatedDate?: number;
   isOpen?: boolean;

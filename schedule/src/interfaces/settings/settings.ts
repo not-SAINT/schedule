@@ -1,15 +1,15 @@
 import { ScheduleView } from '../../constants/settings';
 
 export interface IColumnFilter {
-  info: boolean;
-  type: boolean;
-  date: boolean;
-  taskName: boolean;
+  lastUpdated: boolean;
+  timeLeft: boolean;
+  special: boolean;
+  comment: boolean;
+  url: boolean;
   hours: boolean;
   lastTime: boolean;
   organizer: boolean;
   place: boolean;
-  additional: boolean;
 }
 
 export interface ISettings {

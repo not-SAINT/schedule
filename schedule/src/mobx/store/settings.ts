@@ -17,15 +17,15 @@ const initSettings: ISettings = {
     tests: false,
   },
   columnsFilter: {
-    info: true,
-    type: true,
-    date: true,
-    taskName: true,
+    lastUpdated: true,
+    timeLeft: true,
+    special: true,
+    comment: true,
+    url: true,
     hours: true,
     lastTime: true,
     organizer: true,
     place: true,
-    additional: true,
   },
 };
 
