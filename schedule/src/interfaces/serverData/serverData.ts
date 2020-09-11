@@ -5,12 +5,14 @@ export interface IEvent {
   descriptionUrl: string;
   type: string;
   timeZone: string;
-  dateTime: string;
+  dateTime: number;
   place: string;
   comment: string;
-  deadline?: string;
+  deadline?: number;
   hours?: string;
-  isEdited?: boolean;
+  lastUpdatedDate?: number;
+  isOpen?: boolean;
+  isVisible?: boolean;
 }
 
 export interface IOrganizer {

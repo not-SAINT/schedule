@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, Tag, Tooltip } from 'antd';
 import { InfoCircleOutlined, BulbTwoTone } from '@ant-design/icons';
 
 import { IEvent } from '../../interfaces/serverData/serverData';
+import { NOTIFICATION_PERIOD } from '../../constants/settings';
+import { getTimeLeft, getSpecTags, getTagColorByEventType } from '../../helpers/schedule-utils';
+
 import style from './ScheduleTable.module.scss';
 
 const { Column } = Table;
@@ -12,44 +15,66 @@ interface IScheduleTable {
 }
 
 const ScheduleTable: React.FC<IScheduleTable> = ({ data }: IScheduleTable): React.ReactElement => {
-  const getTimeLeft = (deadline: string): string => {
-    const currentTime = Date.now();
-    const deadlineTime = +deadline;
-    const timeLeft = deadlineTime - currentTime;
-    const daysLeft = Math.trunc(timeLeft / 1000 / 3600 / 24);
+  const [selectedRows, setSelectRowKeys] = useState([] as string[] | number[]);
+  const currentTime = Date.now();
 
-    if (deadline === '') {
+  const onSelectRows = (selectedRowKeys: any) => {
+    setSelectRowKeys(selectedRowKeys);
+  };
+
+  const rowSelection = {
+    selectedRows,
+    columnWidth: '25px',
+    onChange: onSelectRows,
+  };
+
+  const renderSpecialTags = (comment: string): React.ReactFragment => {
+    const tags = getSpecTags(comment);
+
+    if (tags === '') {
       return '';
     }
 
-    if (timeLeft < 0) {
-      return 'Expired';
-    }
-
-    if (daysLeft >= 1) {
-      return `Days left: ${daysLeft}`;
-    }
-
-    return `Hours left: ${Math.trunc(timeLeft / 1000 / 3600)}`;
+    return (
+      <>
+        {tags.map((tag: string) => (
+          <Tag key={tag}>{tag.toUpperCase()}</Tag>
+        ))}
+      </>
+    );
   };
-
-  // const getTagColorByEventType = (type: string): string => {};
 
   return (
     <div className={style.ScheduleTable}>
       {/* <Tooltip title="prompt text" color="blue">
-        <Button type="primary">Primary Button</Button>
+        <Button type="primary" onClick={onButtonClick}>
+          Primary Button
+        </Button>
       </Tooltip> */}
-      <Table dataSource={data} rowKey="uid" rowClassName={() => style['ScheduleTable--disabled-row']}>
+      <Table
+        dataSource={data}
+        rowKey={(record) => record.id}
+        rowClassName={({ dateTime }) => {
+          return +dateTime < currentTime ? style['ScheduleTable--disabled-row'] : '';
+        }}
+        pagination={{ hideOnSinglePage: true }}
+        rowSelection={rowSelection}
+      >
         <Column
           title={() => (
             <Tooltip title="Did event update?">
               <InfoCircleOutlined />
             </Tooltip>
           )}
-          dataIndex="isEdited"
-          key="isEdited"
-          render={(isEdited) => (isEdited ? <BulbTwoTone twoToneColor="red" /> : '')}
+          dataIndex="lastUpdatedDate"
+          key="lastUpdatedDate"
+          render={(lastUpdatedDate) => (
+            <Tooltip title={`Last event update: ${new Date(lastUpdatedDate).toLocaleString()}`}>
+              <span>
+                {currentTime - lastUpdatedDate < NOTIFICATION_PERIOD ? <BulbTwoTone twoToneColor="red" /> : ''}
+              </span>
+            </Tooltip>
+          )}
           width="5%"
         />
         <Column
@@ -64,9 +89,26 @@ const ScheduleTable: React.FC<IScheduleTable> = ({ data }: IScheduleTable): Reac
           dataIndex="deadline"
           key="timeLeft"
           width="10%"
-          render={(deadline: string) => getTimeLeft(deadline)}
+          render={(deadline: number) => (
+            <Tooltip title={`Deadline: ${new Date(deadline).toLocaleString()}`}>
+              <span>{getTimeLeft(deadline)}</span>
+            </Tooltip>
+          )}
         />
-        <Column title="Type" dataIndex="type" key="type" render={(type) => <Tag color="blue">{type}</Tag>} width="7%" />
+        <Column
+          title="Type"
+          dataIndex="type"
+          key="type"
+          render={(type) => <Tag color={getTagColorByEventType(type)}>{type}</Tag>}
+          width="7%"
+        />
+        <Column
+          title="Special"
+          dataIndex="comment"
+          key="special"
+          render={(comment) => renderSpecialTags(comment)}
+          width="9%"
+        />
         <Column title="Name" dataIndex="name" key="name" width="25%" />
         <Column
           title="Url"
@@ -87,7 +129,7 @@ const ScheduleTable: React.FC<IScheduleTable> = ({ data }: IScheduleTable): Reac
           ellipsis
         />
         <Column title="Comment" dataIndex="comment" key="comment" width="10%" ellipsis />
-        <Column title="Hours" dataIndex="hours" key="hours" width="6%" />
+        <Column title="Hours" dataIndex="hours" key="hours" width="7%" />
         <Column title="Organizer" dataIndex="organizer" key="organizer" width="10%" />
         <Column title="Place" dataIndex="place" key="place" width="10%" />
       </Table>
