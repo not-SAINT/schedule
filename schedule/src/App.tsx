@@ -5,6 +5,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import Settings from './mobx/store/settings';
 import ErrorFallback from './components/ErrorFallback';
 import ScheduleTable from './components/ScheduleTable';
+import ControlPanel from './components/ControlPanel';
 import { IEvent } from './interfaces/serverData/serverData';
 import { addDeadlineEvents } from './helpers/schedule-utils';
 
@@ -82,7 +83,7 @@ const fakeScheduleTasks: IEvent[] = [
     name: 'task6',
     description: 'test even fdg ',
     descriptionUrl: 'ya.ru',
-    type: 'task',
+    type: 'codewars',
     timeZone: '+3',
     dateTime: 1599966266489,
     place: '',
@@ -99,6 +100,7 @@ const App = (): React.ReactElement => {
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
         <div />
       </ErrorBoundary>
+      <ControlPanel />
       <ScheduleTable data={tasks} />
     </Provider>
   );

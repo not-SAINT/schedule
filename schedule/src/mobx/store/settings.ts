@@ -1,6 +1,6 @@
 import { observable, configure, decorate, action } from 'mobx';
 
-import { ISettings, IColumnFilter } from '../../interfaces/settings/settings';
+import { ISettings } from '../../interfaces/settings/settings';
 import { ScheduleView, LOCAL_SETTINGS, DEFAULT_TIMEZONE } from '../../constants/settings';
 
 configure({ enforceActions: 'observed' });
@@ -13,8 +13,16 @@ const initSettings: ISettings = {
   isHideOldEvents: false,
   isEditModeOn: false,
   tasksFilter: {
-    tasks: false,
-    tests: false,
+    'code jam': false,
+    codewars: false,
+    interview: false,
+    review: false,
+    'self education': false,
+    special: false,
+    task: false,
+    test: false,
+    deadline: false,
+    webinar: false,
   },
   columnsFilter: {
     lastUpdated: true,
@@ -23,7 +31,6 @@ const initSettings: ISettings = {
     comment: true,
     url: true,
     hours: true,
-    lastTime: true,
     organizer: true,
     place: true,
   },
@@ -80,8 +87,10 @@ class Settings {
     this.setSettings();
   };
 
-  setColumnFilter = (columnFilter: IColumnFilter) => {
-    this.settings.columnsFilter = columnFilter;
+  setColumnFilter = (columnFilter: string[]) => {
+    Object.keys(this.settings.columnsFilter).forEach((column: string) => {
+      this.settings.columnsFilter[column] = columnFilter.includes(column.toString());
+    });
     this.setSettings();
   };
 

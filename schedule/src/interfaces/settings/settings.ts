@@ -7,7 +7,6 @@ export interface IColumnFilter {
   comment: boolean;
   url: boolean;
   hours: boolean;
-  lastTime: boolean;
   organizer: boolean;
   place: boolean;
 }
@@ -20,5 +19,5 @@ export interface ISettings {
   isHideOldEvents: boolean;
   isEditModeOn: boolean;
   tasksFilter: { [index: string]: boolean };
-  columnsFilter: IColumnFilter;
+  columnsFilter: { [index: string]: boolean };
 }

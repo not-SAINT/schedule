@@ -21,20 +21,11 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
   const currentTime = Date.now();
   const {
     settings: {
-      settings: { columnsFilter },
+      settings: { columnsFilter, isHideOldEvents },
     },
   } = useStores();
-  // const {
-  //   settings: { columnsFilter, course },
-  // } = useStores();
-  // const { columnsFilter } = settings.settings;
 
-  // console.log(course);
-  // console.log(columnsFilter.type);
-  // console.log(columnsFilter);
-
-  // console.log(`selectedRows.length = ${selectedRows.length}`);
-  // console.log(`data.length = ${data.length}`);
+  const dataSource = isHideOldEvents ? data.filter(({ dateTime }) => dateTime >= currentTime) : data;
 
   const onSelectRows = (selectedRowKeys: any) => {
     setSelectRowKeys(selectedRowKeys);
@@ -64,13 +55,8 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
 
   return (
     <div className={style.ScheduleTable}>
-      {/* <Tooltip title="prompt text" color="blue">
-        <Button type="primary" onClick={onButtonClick}>
-          Primary Button
-        </Button>
-      </Tooltip> */}
       <Table
-        dataSource={data}
+        dataSource={dataSource}
         rowKey={(record) => record.id}
         rowClassName={({ dateTime }) => {
           return +dateTime < currentTime ? style['ScheduleTable--disabled-row'] : '';

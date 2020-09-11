@@ -11,7 +11,7 @@ interface ISwitcher {
   isEnable: boolean;
 }
 
-const Switcher = ({ text, isEnable, callback }: ISwitcher) => {
+const Switcher = ({ text, isEnable, callback }: ISwitcher): React.ReactElement => {
   return (
     <Space direction="horizontal">
       <Switch
@@ -21,7 +21,7 @@ const Switcher = ({ text, isEnable, callback }: ISwitcher) => {
         unCheckedChildren={<CloseOutlined />}
         defaultChecked
       />
-      <Text type="danger">{text}</Text>
+      <Text strong>{text}</Text>
     </Space>
   );
 };

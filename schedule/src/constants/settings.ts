@@ -38,7 +38,7 @@ export type TaskType = typeof EVENT_TYPES[number];
 export const DEADLINE = 'deadline';
 export const EVENT_PALETTE = {
   'code jam': 'lime',
-  codewars: 'magneta',
+  codewars: 'magenta',
   deadline: 'red',
   interview: 'orange',
   review: 'yellow',
