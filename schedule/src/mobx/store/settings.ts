@@ -98,6 +98,12 @@ class Settings {
     this.settings = initSettings;
     this.setSettings();
   };
+
+  toggleViewMode = () => {
+    this.settings.viewMode =
+      this.settings.viewMode % 2 === 0 && this.settings.viewMode !== 0 ? 0 : this.settings.viewMode + 1;
+    this.setSettings();
+  };
 }
 
 decorate(Settings, {
@@ -111,6 +117,7 @@ decorate(Settings, {
   setTaskFilter: action,
   setColumnFilter: action,
   settingsReset: action,
+  toggleViewMode: action,
 });
 
 export default Settings;
