@@ -4,6 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Settings from './mobx/store/settings';
+import Events from './mobx/store/events';
 import ErrorFallback from './components/ErrorFallback';
 import EventPage from './components/EventPage';
 import ScheduleTable from './components/ScheduleTable';
@@ -15,6 +16,7 @@ import 'antd/dist/antd.css';
 import './App.css';
 
 const settings = new Settings();
+const events = new Events();
 
 const fakeScheduleTasks: IEvent[] = [
   {

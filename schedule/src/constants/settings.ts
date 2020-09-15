@@ -5,6 +5,7 @@ export enum ScheduleView {
   List,
   Calendar,
 }
+
 export const EVENT_TYPES = [
   'code jam',
   'codewars',
@@ -50,3 +51,5 @@ export const EVENT_PALETTE = {
 };
 
 export const NOTIFICATION_PERIOD = 7 * 24 * 3600 * 1000;
+export const DEFAULT_ZOOM = 12;
+export const YANDEX_KEY = '9d0214b0-7d03-4e6b-9632-373c90a90e0c';

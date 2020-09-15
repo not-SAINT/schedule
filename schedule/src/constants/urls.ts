@@ -1,4 +1,4 @@
-const TEAM_ID = 'teamId';
+const TEAM_ID = '34';
 
 const urls = {
   getAllEvents: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/events`,
