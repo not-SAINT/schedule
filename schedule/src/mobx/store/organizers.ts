@@ -1,4 +1,4 @@
-import { observable, configure, decorate, action } from 'mobx';
+import { observable, configure, decorate, action, runInAction } from 'mobx';
 import server from '../../server/server';
 import { IOrganizer } from '../../interfaces/serverData/serverData';
 
@@ -18,9 +18,13 @@ class Organizers {
   async getOrganizers() {
     try {
       const allEvents = await server.getAllOrganizers();
-      this.organizers = allEvents;
+      runInAction(() => {
+        this.organizers = allEvents;
+      });
     } catch (e) {
-      this.error = e;
+      runInAction(() => {
+        this.error = e;
+      });
     }
   }
 }
