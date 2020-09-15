@@ -7,9 +7,10 @@ const { Option } = Select;
 interface ISelector {
   titles: { [index: string]: boolean };
   callback: (object: string[]) => void;
+  placeholder: string;
 }
 
-const Selector = ({ titles, callback }: ISelector) => {
+const Selector = ({ titles, callback, placeholder }: ISelector): React.ReactElement => {
   const selectionTypes: JSX.Element[] = [];
 
   const defaultValuesMap = () => {
@@ -36,16 +37,18 @@ const Selector = ({ titles, callback }: ISelector) => {
   };
 
   return (
-    <Select
-      onChange={changeHandler}
-      defaultValue={defaultValuesMap()}
-      mode="multiple"
-      allowClear
-      style={{ width: '100%' }}
-      placeholder="Please select"
-    >
-      {selectionTypes}
-    </Select>
+    <div style={{ minWidth: '250px' }}>
+      <Select
+        onChange={changeHandler}
+        defaultValue={defaultValuesMap()}
+        mode="multiple"
+        allowClear
+        style={{ width: '100%' }}
+        placeholder={placeholder}
+      >
+        {selectionTypes}
+      </Select>
+    </div>
   );
 };
 

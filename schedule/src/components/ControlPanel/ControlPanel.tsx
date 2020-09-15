@@ -11,10 +11,12 @@ import Selector from '../Selector/Selector';
 
 const ControlPanel = observer(() => {
   const { settings } = useStores();
-  const { isEditModeOn, isHideOldEvents, tasksFilter } = settings.settings;
-  const { toggleEditModeSwitcher, toggleHideOldEvents, setTaskFilter } = settings;
+  const { isEditModeOn, isHideOldEvents, tasksFilter, columnsFilter } = settings.settings;
+  const { toggleEditModeSwitcher, toggleHideOldEvents, setTaskFilter, setColumnFilter } = settings;
 
   const colClasses = classNames('gutter-row', styles.ControlPanel__element);
+  const oldEventsText = isHideOldEvents ? 'Hide old events' : 'Show old events';
+  const editText = isEditModeOn ? 'Edit: on' : 'Edit: off';
 
   return (
     <div className={styles.ControlPanel}>
@@ -22,14 +24,23 @@ const ControlPanel = observer(() => {
         <Col className={colClasses} span={6}>
           <PrimaryButton text="Add event" callback={() => {}} />
         </Col>
+
         <Col className={colClasses} span={6}>
-          <Switcher text="Edit" callback={toggleEditModeSwitcher} isEnable={isEditModeOn} />
+          <Switcher text={oldEventsText} callback={toggleHideOldEvents} isEnable={isHideOldEvents} />
         </Col>
+
         <Col className={colClasses} span={6}>
-          <Switcher text="Old tasks" callback={toggleHideOldEvents} isEnable={isHideOldEvents} />
+          <Switcher text={editText} callback={toggleEditModeSwitcher} isEnable={isEditModeOn} />
         </Col>
-        <Col className={colClasses} span={6}>
-          <Selector titles={tasksFilter} callback={setTaskFilter} />
+      </Row>
+      <Row gutter={[16, 24]}>
+        <Col className={colClasses}>
+          <Selector titles={tasksFilter} callback={setTaskFilter} placeholder="Select events type" />
+        </Col>
+      </Row>
+      <Row>
+        <Col className={colClasses}>
+          <Selector titles={columnsFilter} callback={setColumnFilter} placeholder="Select columns" />
         </Col>
       </Row>
     </div>

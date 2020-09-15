@@ -10,7 +10,9 @@ export interface IEvent {
   comment: string;
   deadline: number;
   hours?: string;
-  isEdited?: boolean;
+  lastUpdatedDate?: number;
+  isOpen: boolean;
+  isVisible?: boolean;
 }
 
 export interface IOrganizer {

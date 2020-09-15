@@ -1,8 +1,13 @@
 .ScheduleTable {
   margin: 20px auto;
   max-width: 1200px;
+  min-width: 1200px;
 
   &--disabled-row {
     opacity: 0.5;
+  }
+
+  &--closed-row {
+    background: #f1e28c42;
   }
 }
