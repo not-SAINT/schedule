@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Table, Tag, Tooltip } from 'antd';
 import { InfoCircleOutlined, BulbTwoTone, ClockCircleOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
-
+import classNames from 'classnames';
 import useStores from '../../mobx/context';
+
+import TaskUrlIco from '../TaskUrlIco';
 import { IEvent } from '../../interfaces/serverData/serverData';
 import { NOTIFICATION_PERIOD } from '../../constants/settings';
 import { getTimeLeft, getSpecTags, getTagColorByEventType } from '../../helpers/schedule-utils';
 
 import style from './ScheduleTable.module.scss';
-import TaskUrlIco from '../TaskUrlIco';
 
 interface IScheduleTable {
   data: IEvent[];
@@ -22,11 +23,19 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
   const currentTime = Date.now();
   const {
     settings: {
-      settings: { columnsFilter, isHideOldEvents },
+      settings: { columnsFilter, isHideOldEvents, isEditModeOn },
     },
   } = useStores();
 
-  const dataSource = isHideOldEvents ? data.filter(({ dateTime }) => dateTime >= currentTime) : data;
+  let dataSource = isHideOldEvents ? data.filter(({ dateTime }) => dateTime >= currentTime) : data;
+  dataSource = !isEditModeOn ? dataSource.filter(({ isOpen }) => isOpen && !isEditModeOn) : dataSource;
+
+  const rowClasses = (dateTime: number, isOpen: boolean): string => {
+    return classNames(
+      { [style['ScheduleTable--disabled-row']]: dateTime < currentTime },
+      { [style['ScheduleTable--closed-row']]: !isOpen },
+    );
+  };
 
   const onSelectRows = (selectedRowKeys: any) => {
     setSelectRowKeys(selectedRowKeys);
@@ -59,9 +68,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
       <Table
         dataSource={dataSource}
         rowKey={(record) => record.id}
-        rowClassName={({ dateTime }) => {
-          return +dateTime < currentTime ? style['ScheduleTable--disabled-row'] : '';
-        }}
+        rowClassName={({ dateTime, isOpen }) => rowClasses(dateTime, isOpen)}
         pagination={{ hideOnSinglePage: true }}
         rowSelection={rowSelection}
       >
@@ -129,7 +136,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           key="id"
           width="25%"
           render={(name, event: IEvent) => (
-            <Link to={{ pathname: `/task/${name}_${event.id}`, state: { testvalue: event } }}>{name}</Link>
+            <Link to={{ pathname: `/task/${event.id}`, state: { ts: event } }}>{name}</Link>
           )}
         />
         {columnsFilter.url && (

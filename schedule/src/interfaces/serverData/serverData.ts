@@ -11,7 +11,7 @@ export interface IEvent {
   deadline: number;
   hours?: string;
   lastUpdatedDate?: number;
-  isOpen?: boolean;
+  isOpen: boolean;
   isVisible?: boolean;
 }
 

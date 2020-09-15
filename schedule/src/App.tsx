@@ -5,7 +5,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Settings from './mobx/store/settings';
 import ErrorFallback from './components/ErrorFallback';
-import TestComponent from './components/TestComponent';
+import EventPage from './components/EventPage';
 import ScheduleTable from './components/ScheduleTable';
 import ControlPanel from './components/ControlPanel';
 import { IEvent } from './interfaces/serverData/serverData';
@@ -29,6 +29,7 @@ const fakeScheduleTasks: IEvent[] = [
     comment: 'test comment^js;optional',
     deadline: 1599569258857,
     lastUpdatedDate: 1598567266489,
+    isOpen: true,
   },
   {
     id: '2',
@@ -41,6 +42,7 @@ const fakeScheduleTasks: IEvent[] = [
     place: '',
     comment: 'test comment^js;optional',
     deadline: 1599569258857,
+    isOpen: true,
   },
   {
     id: '3',
@@ -53,6 +55,7 @@ const fakeScheduleTasks: IEvent[] = [
     place: '',
     comment: 'test comment',
     deadline: 1599641395487,
+    isOpen: true,
   },
   {
     id: '4',
@@ -66,6 +69,7 @@ const fakeScheduleTasks: IEvent[] = [
     comment: 'test comment2',
     deadline: 0,
     hours: '3',
+    isOpen: true,
   },
   {
     id: '5',
@@ -79,6 +83,7 @@ const fakeScheduleTasks: IEvent[] = [
     comment: 'test comment3',
     deadline: 0,
     lastUpdatedDate: 1599548166489,
+    isOpen: true,
   },
   {
     id: '6',
@@ -91,6 +96,33 @@ const fakeScheduleTasks: IEvent[] = [
     place: '',
     comment: 'test comment^js',
     deadline: 1599996266489,
+    isOpen: true,
+  },
+  {
+    id: '7',
+    name: 'task7',
+    description: 'test 7 even fdg ',
+    descriptionUrl: 'https:\\ya.ru',
+    type: 'codewars',
+    timeZone: '+3',
+    dateTime: 1604966266489,
+    place: '',
+    comment: 'test comment^js',
+    deadline: 1605966266489,
+    isOpen: true,
+  },
+  {
+    id: '8',
+    name: 'task8',
+    description: 'test 8 even fdg ',
+    descriptionUrl: 'https:\\aya.ru',
+    type: 'task',
+    timeZone: '+3',
+    dateTime: 1604566266489,
+    place: '',
+    comment: 'test comment^html',
+    deadline: 1605566266489,
+    isOpen: false,
   },
 ];
 
@@ -111,7 +143,7 @@ const App = (): React.ReactElement => {
               </ErrorBoundary>
             )}
           />
-          <Route path="/task/:name_id" component={TestComponent} />
+          <Route path="/task/:id" component={EventPage} />
           <Redirect to="/" />
         </Switch>
       </BrowserRouter>
