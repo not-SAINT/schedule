@@ -21,3 +21,9 @@ export interface ISettings {
   tasksFilter: { [index: string]: boolean };
   columnsFilter: { [index: string]: boolean };
 }
+
+export interface IPlace {
+  placeName: string;
+  lat: number;
+  lng: number;
+}

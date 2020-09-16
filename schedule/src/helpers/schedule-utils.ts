@@ -1,5 +1,6 @@
-import { EVENT_PALETTE, TaskType, DEADLINE } from '../constants/settings';
+import { EVENT_PALETTE, TaskType, DEADLINE, DEFAULT_PLACE } from '../constants/settings';
 import { IEvent } from '../interfaces/serverData/serverData';
+import { IPlace } from '../interfaces/settings/settings';
 
 export const getTimeLeft = (deadline: number): string => {
   const now = Date.now();
@@ -22,16 +23,24 @@ export const getTimeLeft = (deadline: number): string => {
   return `Hours left: ${Math.trunc(timeLeft / 1000 / 3600)}`;
 };
 
-export const getSpecTags = (comment: string): string[] | '' => {
+export const getSpecTags = (specialTags: string): string[] | '' => {
+  if (!specialTags) {
+    return '';
+  }
+
+  return specialTags.split(';');
+};
+
+export const getFeedback = (comment: string): string[] | '' => {
   const index = comment.indexOf('^');
 
   if (index === -1) {
     return '';
   }
 
-  const tags = comment.slice(index + 1);
+  const feedback = comment.slice(0, index);
 
-  return tags.split(';');
+  return feedback.split('#');
 };
 
 export const getTagColorByEventType = (taskType: TaskType): string => {
@@ -50,4 +59,34 @@ export const addDeadlineEvents = (data: IEvent[]): IEvent[] => {
   });
 
   return data.concat(deadlineVirtualTasks);
+};
+
+export const checkEventOnMarkdownDescriptionUrl = (descriptionUrl: string): boolean => {
+  return descriptionUrl.includes('.md') && descriptionUrl.includes('github');
+};
+
+export const convertEventUrlWithMakdown = (descriptionUrl: string): string => {
+  let result = descriptionUrl;
+
+  if (descriptionUrl.includes('github.com') && descriptionUrl.includes('.md')) {
+    result = result.replace('github.com', 'raw.githubusercontent.com');
+    result = result.replace('blob/', '');
+  }
+
+  return result;
+};
+
+export const getPlaceObject = (place: string): IPlace => {
+  const index = place.indexOf('^');
+  const coords = place.slice(index + 1).split(',');
+
+  if (index === -1 || coords.length < 2) {
+    return DEFAULT_PLACE;
+  }
+
+  return {
+    placeName: place.slice(0, index),
+    lat: +coords[0].trim(),
+    lng: +coords[1].trim(),
+  };
 };

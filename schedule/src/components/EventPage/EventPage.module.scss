@@ -1,0 +1,14 @@
+.EventPage {
+  margin: 20px auto;
+  max-width: 1200px;
+  padding: 20px 10px;
+
+  &__event-container {
+    overflow: hidden;
+  }
+
+  &__map-container {
+    height: 300px;
+    width: 300px;
+  }
+}

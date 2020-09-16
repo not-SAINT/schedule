@@ -4,6 +4,7 @@ export interface IEvent {
   description: string;
   descriptionUrl: string;
   type: string;
+  specialTags?: string;
   timeZone: string;
   dateTime: number;
   place: string;
@@ -13,6 +14,7 @@ export interface IEvent {
   lastUpdatedDate?: number;
   isOpen: boolean;
   isVisible?: boolean;
+  isFeedbackEnabled?: boolean;
 }
 
 export interface IOrganizer {
