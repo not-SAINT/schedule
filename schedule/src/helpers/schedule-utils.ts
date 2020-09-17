@@ -1,6 +1,6 @@
 import { EVENT_PALETTE, TaskType, DEADLINE, DEFAULT_PLACE } from '../constants/settings';
 import { IEvent } from '../interfaces/serverData/serverData';
-import { IPlace } from '../interfaces/settings/settings';
+import { IPlace, IFilter } from '../interfaces/settings/settings';
 
 export const getTimeLeft = (deadline: number): string => {
   const now = Date.now();
@@ -89,4 +89,17 @@ export const getPlaceObject = (place: string): IPlace => {
     lat: +coords[0].trim(),
     lng: +coords[1].trim(),
   };
+};
+
+export const filterEvents = (data: IEvent[], filter: IFilter): IEvent[] => {
+  let events = data;
+
+  const excludedEventTypes = Object.keys(filter).filter((type) => !filter[type]);
+
+  excludedEventTypes.forEach((key) => {
+    events = events.filter(({ type }) => type !== key);
+    return events;
+  });
+
+  return events;
 };

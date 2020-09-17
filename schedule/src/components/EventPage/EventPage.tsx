@@ -71,9 +71,6 @@ const EventPage: React.FC = ({ location: { state } }: any) => {
   const editEventPlaceName = isEditModeOn ? { onChange: setEventPlaceName } : false;
   const editEventPlaceCoords = isEditModeOn ? { onChange: setEventPlaceCoords } : false;
 
-  // console.log(`hasEventMarkdownOnGithub = ${hasEventMarkdownOnGithub}`);
-  // console.log(`convertEventUrlWithMakdown(descriptionUrl) = ${convertEventUrlWithMakdown(descriptionUrl)}`);
-
   useEffect(() => {
     if (name !== eventName) {
       console.log(eventName);
@@ -84,12 +81,6 @@ const EventPage: React.FC = ({ location: { state } }: any) => {
       setEventEdited(true);
     }
   }, [eventName, eventUrl, descriptionUrl, name]);
-
-  // useEffect(() => {
-  //   setEventEdited(false);
-  //   console.log('setEventEdited');
-  //   console.log(`isEventEdited = ${isEventEdited}`);
-  // }, [eventName, eventUrl, descriptionUrl, name]);
 
   useEffect(() => {
     if (hasEventMarkdownOnGithub) {
@@ -157,7 +148,6 @@ const EventPage: React.FC = ({ location: { state } }: any) => {
           )}
         </Row>
 
-        {/* <Tooltip title="Back to schedule"> */}
         {isEventEdited && (
           <Popconfirm
             placement="leftBottom"
@@ -170,8 +160,6 @@ const EventPage: React.FC = ({ location: { state } }: any) => {
           </Popconfirm>
         )}
         {!isEventEdited && <Button shape="circle" icon={<CloseOutlined />} onClick={onBackClick} />}
-
-        {/* </Tooltip> */}
       </Row>
       <Row justify="space-between" align="middle" gutter={[16, 24]}>
         <Col span={4} flex="100px">

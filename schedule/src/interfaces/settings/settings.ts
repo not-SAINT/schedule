@@ -11,6 +11,9 @@ export interface IColumnFilter {
   place: boolean;
 }
 
+export interface IFilter {
+  [index: string]: boolean;
+}
 export interface ISettings {
   viewMode: ScheduleView;
   timeZone: number;
@@ -18,8 +21,8 @@ export interface ISettings {
   course: string;
   isHideOldEvents: boolean;
   isEditModeOn: boolean;
-  tasksFilter: { [index: string]: boolean };
-  columnsFilter: { [index: string]: boolean };
+  tasksFilter: IFilter;
+  columnsFilter: IFilter;
 }
 
 export interface IPlace {

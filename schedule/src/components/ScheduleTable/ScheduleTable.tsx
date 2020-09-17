@@ -119,7 +119,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           dataIndex="type"
           key="type"
           render={(type) => <Tag color={getTagColorByEventType(type)}>{type}</Tag>}
-          width="7%"
+          width="10%"
         />
         {columnsFilter.special && (
           <Column
@@ -135,7 +135,9 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           dataIndex="name"
           key="id"
           width="25%"
-          render={(name, event: IEvent) => <Link to={{ pathname: `/task/${event.id}`, state: { event } }}>{name}</Link>}
+          render={(name, event: IEvent) => {
+            return <Link to={{ pathname: `/task/${event.id}`, state: { event } }}>{name}</Link>;
+          }}
         />
         {columnsFilter.url && (
           <Column
@@ -170,6 +172,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           />
         )}
         {columnsFilter.organizer && <Column title="Organizer" dataIndex="organizer" key="organizer" width="10%" />}
+        <Column title="ID" dataIndex="id" key="id" width="10%" />
         {columnsFilter.place && (
           <Column
             title="Place"
