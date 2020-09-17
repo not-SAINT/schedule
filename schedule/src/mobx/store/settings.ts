@@ -15,6 +15,7 @@ const initSettings: ISettings = {
   tasksFilter: {
     'code jam': false,
     codewars: false,
+    'cross-check': false,
     interview: false,
     review: false,
     'self education': false,

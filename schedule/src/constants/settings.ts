@@ -5,10 +5,12 @@ export enum ScheduleView {
   List,
   Calendar,
 }
+export const COUNT_VIEW_MODES = 3;
 
 export const EVENT_TYPES = [
   'code jam',
   'codewars',
+  'cross-check',
   'interview',
   'review',
   'self education',
@@ -40,6 +42,7 @@ export const DEADLINE = 'deadline';
 export const EVENT_PALETTE = {
   'code jam': 'lime',
   codewars: 'magenta',
+  'cross-check': 'blue',
   deadline: 'red',
   interview: 'orange',
   review: 'yellow',
