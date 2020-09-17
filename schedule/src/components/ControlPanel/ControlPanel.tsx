@@ -3,11 +3,12 @@ import { observer } from 'mobx-react';
 import classNames from 'classnames';
 import { Col, Row } from 'antd';
 
-import useStores from '../../mobx/context';
 import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import Switcher from '../Switcher/Switcher';
-import styles from './ControlPanel.module.scss';
 import Selector from '../Selector/Selector';
+import useStores from '../../mobx/context';
+
+import styles from './ControlPanel.module.scss';
 
 const ControlPanel = observer(() => {
   const { settings } = useStores();

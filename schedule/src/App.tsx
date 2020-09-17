@@ -4,7 +4,7 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Settings from './mobx/store/settings';
-import Events from './mobx/store/events';
+// import Events from './mobx/store/events';
 import ErrorFallback from './components/ErrorFallback';
 import EventPage from './components/EventPage';
 import ScheduleTable from './components/ScheduleTable';
@@ -16,7 +16,7 @@ import 'antd/dist/antd.css';
 import './App.css';
 
 const settings = new Settings();
-const events = new Events();
+// const events = new Events();
 
 const fakeScheduleTasks: IEvent[] = [
   {
@@ -96,35 +96,61 @@ const fakeScheduleTasks: IEvent[] = [
     timeZone: '+3',
     dateTime: 1599966266489,
     place: '',
-    comment: 'test comment^js',
+    comment: 'test ckg #egl jgh jflhj kldrtj#re gkhrekomment',
     deadline: 1599996266489,
     isOpen: true,
+    isFeedbackEnabled: true,
+    specialTags: 'js',
   },
   {
     id: '7',
-    name: 'task7',
+    name: 'webdev direct url',
     description: 'test 7 even fdg ',
-    descriptionUrl: 'https:\\ya.ru',
+    descriptionUrl:
+      'https://github.com/rolling-scopes-school/tasks/blob/master/tasks/markups/level-1/webdev/webdev-ru.md',
     type: 'codewars',
     timeZone: '+3',
     dateTime: 1604966266489,
     place: '',
-    comment: 'test comment^js',
+    hours: '9',
+    comment: 'test comkg #egl jgh jflhj kldrtj#re gkhrekment',
     deadline: 1605966266489,
     isOpen: true,
+    isFeedbackEnabled: true,
+    specialTags: 'js',
   },
   {
     id: '8',
-    name: 'task8',
-    description: 'test 8 even fdg ',
-    descriptionUrl: 'https:\\aya.ru',
+    name: 'songbird direct url',
+    description: 'songbird direct url ',
+    descriptionUrl: 'https://github.com/rolling-scopes-school/tasks/blob/master/tasks/songbird.md',
     type: 'task',
     timeZone: '+3',
     dateTime: 1604566266489,
-    place: '',
-    comment: 'test comment^html',
+    place: 'Minsk, dsfwe r^53.9,27.566',
+    hours: '53',
+    comment: 'test comkg #egl jgh jflhj kldrtj#re gkhrekment',
     deadline: 1605566266489,
     isOpen: false,
+    isFeedbackEnabled: true,
+    specialTags: 'html',
+  },
+  {
+    id: '9',
+    name: 'webdev raw',
+    description: 'webdev raw ',
+    descriptionUrl:
+      'https://raw.githubusercontent.com/rolling-scopes-school/tasks/master/tasks/markups/level-1/webdev/webdev-ru.md',
+    type: 'task',
+    timeZone: '+3',
+    dateTime: 1604966266489,
+    place: 'Brest, dsfwe r^52.146793, 23.603838',
+    hours: '150',
+    comment: 'test #dkbjv sdfkghdjkg #egl jgh jflhj kldrtj#re gkhrekjgherwklj g@#4grlkhtjtl rjcomment',
+    deadline: 1605977266489,
+    isOpen: true,
+    isFeedbackEnabled: true,
+    specialTags: 'hrml;css',
   },
 ];
 

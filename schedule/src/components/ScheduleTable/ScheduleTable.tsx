@@ -4,12 +4,12 @@ import { observer } from 'mobx-react';
 import { Table, Tag, Tooltip } from 'antd';
 import { InfoCircleOutlined, BulbTwoTone, ClockCircleOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
-import useStores from '../../mobx/context';
 
 import TaskUrlIco from '../TaskUrlIco';
 import { IEvent } from '../../interfaces/serverData/serverData';
 import { NOTIFICATION_PERIOD } from '../../constants/settings';
-import { getTimeLeft, getSpecTags, getTagColorByEventType } from '../../helpers/schedule-utils';
+import { getTimeLeft, getSpecTags, getTagColorByEventType, getPlaceObject } from '../../helpers/schedule-utils';
+import useStores from '../../mobx/context';
 
 import style from './ScheduleTable.module.scss';
 
@@ -47,8 +47,8 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
     onChange: onSelectRows,
   };
 
-  const renderSpecialTags = (comment: string): React.ReactFragment => {
-    const tags = getSpecTags(comment);
+  const renderSpecialTags = (specialTags: string): React.ReactFragment => {
+    const tags = getSpecTags(specialTags);
 
     if (tags === '') {
       return '';
@@ -95,7 +95,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           title="Date & time"
           dataIndex="dateTime"
           key="dateTime"
-          render={(dateTime: number) => new Date(+dateTime).toLocaleString()}
+          render={(dateTime: number) => new Date(dateTime).toLocaleString()}
           width="10%"
           sorter={(a: IEvent, b: IEvent) => b.dateTime - a.dateTime}
           sortDirections={['descend', 'ascend']}
@@ -121,12 +121,12 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           render={(type) => <Tag color={getTagColorByEventType(type)}>{type}</Tag>}
           width="7%"
         />
-        {columnsFilter.comment && (
+        {columnsFilter.special && (
           <Column
             title="Special"
-            dataIndex="comment"
+            dataIndex="specialTags"
             key="special"
-            render={(comment) => renderSpecialTags(comment)}
+            render={(specialTags) => renderSpecialTags(specialTags)}
             width="9%"
           />
         )}
@@ -135,9 +135,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           dataIndex="name"
           key="id"
           width="25%"
-          render={(name, event: IEvent) => (
-            <Link to={{ pathname: `/task/${event.id}`, state: { ts: event } }}>{name}</Link>
-          )}
+          render={(name, event: IEvent) => <Link to={{ pathname: `/task/${event.id}`, state: { event } }}>{name}</Link>}
         />
         {columnsFilter.url && (
           <Column
@@ -159,7 +157,6 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             ellipsis
           />
         )}
-        {columnsFilter.comment && <Column title="Comment" dataIndex="comment" key="comment" width="10%" ellipsis />}
         {columnsFilter.hours && (
           <Column
             title={() => (
@@ -169,11 +166,31 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             )}
             dataIndex="hours"
             key="hours"
-            width="4%"
+            width="5%"
           />
         )}
         {columnsFilter.organizer && <Column title="Organizer" dataIndex="organizer" key="organizer" width="10%" />}
-        {columnsFilter.place && <Column title="Place" dataIndex="place" key="place" width="10%" />}
+        {columnsFilter.place && (
+          <Column
+            title="Place"
+            dataIndex="place"
+            key="place"
+            width="10%"
+            render={(place) => {
+              if (!place) {
+                return '';
+              }
+
+              const { placeName, lat, lng } = getPlaceObject(place);
+
+              return (
+                <Tooltip placement="topLeft" title={`Coords: ${lat};${lng}`}>
+                  <span>{placeName}</span>
+                </Tooltip>
+              );
+            }}
+          />
+        )}
       </Table>
     </div>
   );
