@@ -48,7 +48,7 @@ function dateCellRender(value: any) {
 }
 
 const ScheduleCalendar = ({ data }: IScheduleCalendar): React.ReactElement => {
-  console.log(data);
+  data.forEach(({ dateTime }) => console.log(dateTime));
   return (
     <div>
       <Calendar dateCellRender={dateCellRender} />
