@@ -2,56 +2,49 @@ import React from 'react';
 import { Calendar } from 'antd';
 
 import { IEvent } from '../../interfaces/serverData/serverData';
+import style from './ScheduleCalendar.module.scss';
 
 interface IScheduleCalendar {
   data: IEvent[];
 }
 
-function getListData(value: any) {
-  let listData;
-  switch (value.date()) {
-    case 8:
-      listData = [{ content: 'This is warning event.' }, { content: 'This is usual event.' }];
-      break;
-    case 10:
-      listData = [
-        { content: 'This is warning event.' },
-        { content: 'This is usual event.' },
-        { content: 'This is error event.' },
-      ];
-      break;
-    case 15:
-      listData = [
-        { content: 'This is warning event' },
-        { content: 'This is very long usual event。。....' },
-        { content: 'This is error event 1.' },
-        { content: 'This is error event 2.' },
-        { content: 'This is error event 3.' },
-        { content: 'This is error event 4.' },
-      ];
-      break;
-    default:
+const getMin = (value: number) => {
+  if (value < 10) {
+    return `0${value}`;
   }
-  return listData || [];
-}
-
-function dateCellRender(value: any) {
-  console.log(value.month());
-  const listData = getListData(value);
-  return (
-    <ul className="events">
-      {listData.map((item) => (
-        <li key={item.content}>{item.content}</li>
-      ))}
-    </ul>
-  );
-}
+  return value;
+};
 
 const ScheduleCalendar = ({ data }: IScheduleCalendar): React.ReactElement => {
-  data.forEach(({ dateTime }) => console.log(dateTime));
+  const dataArray = data.map(({ descriptionUrl, type, dateTime, name }) => ({ descriptionUrl, type, dateTime, name }));
+
+  const dateCellRender = (value: any) => {
+    return (
+      <ul className={style.Calendar__list}>
+        {dataArray.map((item) => {
+          const date = new Date(item.dateTime);
+          const day = date.getDate();
+          const month = date.getMonth();
+          const hours = date.getHours();
+          const minutes = date.getMinutes();
+          if (day === value.date() && month === value.month()) {
+            return (
+              <li key={Math.random()} className={style.Calendar__list}>
+                <a href={item.descriptionUrl} target="_blank" rel="noreferrer" title={item.type}>
+                  {`${hours}:${getMin(minutes)} ${item.name}`}
+                </a>
+              </li>
+            );
+          }
+          return <></>;
+        })}
+      </ul>
+    );
+  };
+
   return (
     <div>
-      <Calendar dateCellRender={dateCellRender} />
+      <Calendar className={style.Calendar} dateCellRender={dateCellRender} />
     </div>
   );
 };
