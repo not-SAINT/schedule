@@ -1,11 +1,11 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import classNames from 'classnames';
-import { Col, Row, Collapse, Select, Typography } from 'antd';
+import { Col, Row, Collapse, Select, Typography, Button } from 'antd';
 
-import { COURSE_TYPES } from '../../constants/settings';
+import { COURSE_TYPES, EVENT_TEMPLATE } from '../../constants/settings';
 import ScheduleViewMode from '../ScheduleViewMode';
-import PrimaryButton from '../PrimaryButton/PrimaryButton';
 import Switcher from '../Switcher/Switcher';
 import Selector from '../Selector/Selector';
 import useStores from '../../mobx/context';
@@ -24,9 +24,12 @@ const ControlPanel = observer(() => {
   const oldEventsText = isHideOldEvents ? 'Hide old events' : 'Show old events';
   const editText = isEditModeOn ? 'Edit: on' : 'Edit: off';
 
+  const event = EVENT_TEMPLATE;
+  const isAddNewEvent = true;
+
   return (
     <div className={styles.ControlPanel}>
-      <Row gutter={[16, 8]}>
+      <Row align="middle" gutter={[16, 8]}>
         <Col className={colClasses} span={6}>
           <ScheduleViewMode />
         </Col>
@@ -40,7 +43,9 @@ const ControlPanel = observer(() => {
         </Col>
         {isEditModeOn && (
           <Col className={colClasses} span={6}>
-            <PrimaryButton text="Add event" callback={() => {}} />
+            <Button type="primary">
+              <Link to={{ pathname: `/task/${event.id}`, state: { event, isAddNewEvent } }}>Add new event</Link>
+            </Button>
           </Col>
         )}
       </Row>

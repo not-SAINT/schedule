@@ -32,14 +32,16 @@ import {
   getDateTime,
 } from '../../helpers/schedule-utils';
 import { FEEDBACK_LENGTH, SPECIAL_EVENT_TAGS, EVENT_TYPES, DATE_FORMAT, COURSE_TYPES } from '../../constants/settings';
+import server from '../../server/server';
 import { ORGANIZER_URL } from '../../constants/urls';
+import { IEvent } from '../../interfaces/serverData/serverData';
 import useStores from '../../mobx/context';
 
 import style from './EventPage.module.scss';
 
 const EventPage: React.FC = ({
   location: {
-    state: { event },
+    state: { event, isAddNewEvent },
   },
 }: any) => {
   const history = useHistory();
@@ -66,9 +68,9 @@ const EventPage: React.FC = ({
     course,
   } = event;
   const isEventOffline = place.length > 0;
-
   const feedback = getFeedback(comment);
   const { placeName, lat, lng } = getPlaceObject(place);
+  const placeCoords = lat !== 0 && lng !== 0 ? `${lat},${lng}` : '';
   const eventWithDeadline = deadline > 0;
 
   const {
@@ -88,7 +90,7 @@ const EventPage: React.FC = ({
   const [eventUrl, setEventUrl] = useState(descriptionUrl);
   const [isShowMap, setShowMap] = useState(isEventOffline);
   const [eventPlaceName, setEventPlaceName] = useState(placeName);
-  const [eventPlaceCoords, setEventPlaceCoords] = useState(`${lat},${lng}`);
+  const [eventPlaceCoords, setEventPlaceCoords] = useState(placeCoords);
   const [isFeedbackNeeded, setFeedbackEnabled] = useState(isFeedbackEnabled);
   const [hasDeadline, setHasDeadline] = useState(eventWithDeadline);
   const [eventFeedback, setEventFeedback] = useState(
@@ -104,7 +106,7 @@ const EventPage: React.FC = ({
   const openEventText = isEditModeOn ? 'Event visible' : 'Event hidden';
   const placeEventText = isShowMap ? 'Event online' : 'Event offline';
   const feedbackEventText = isFeedbackEnabled ? 'Enable feedback' : 'Disable feedback';
-  const deadlineEventText = isFeedbackEnabled ? 'With deadline' : 'Without deadline';
+  const deadlineEventText = hasDeadline ? 'With deadline' : 'Without deadline';
   const editEventName = isEditModeOn ? { onChange: setEventName } : false;
   const editEventUrl = isEditModeOn ? { onChange: setEventUrl } : false;
   const editOrganizer = isEditModeOn ? { onChange: setEventOrganizer } : false;
@@ -130,7 +132,9 @@ const EventPage: React.FC = ({
         type !== eventType ||
         specialTags !== eventSpecialTags ||
         organizerId !== eventOrganizerId ||
-        course !== eventCourse)
+        course !== eventCourse ||
+        isEventOffline !== isShowMap ||
+        isOpen !== eventOpen)
     ) {
       setEventEdited(true);
     }
@@ -149,6 +153,8 @@ const EventPage: React.FC = ({
     eventSpecialTags,
     eventOrganizerId,
     eventCourse,
+    isShowMap,
+    eventOpen,
   ]);
 
   useEffect(() => {
@@ -186,6 +192,9 @@ const EventPage: React.FC = ({
   };
 
   const saveEvent = (eventId = id) => {
+    const hasNewPlace = eventPlaceName.length > 0 || eventPlaceCoords.length > 0;
+    const newPlace = isShowMap && hasNewPlace ? `${eventPlaceName}^${eventPlaceCoords}` : '';
+
     return {
       id: eventId,
       type: eventType,
@@ -195,7 +204,7 @@ const EventPage: React.FC = ({
       deadline: eventDeadline,
       description: eventDescription,
       descriptionUrl: eventUrl,
-      place: `${eventPlaceName}^${eventPlaceCoords}`,
+      place: newPlace,
       comment: eventFeedback,
       hours: eventHours,
       isOpen: eventOpen,
@@ -203,25 +212,22 @@ const EventPage: React.FC = ({
       organizerId: eventOrganizerId,
       course: eventCourse,
       lastUpdatedDate: Date.now(),
-    };
+    } as IEvent;
   };
 
   const onSaveClick = () => {
     const updatedEvent = saveEvent();
 
+    server.updateExistingEvent(id, updatedEvent);
     setEventEdited(false);
-
-    console.log('Events saved!  Soon...');
-    console.log(updatedEvent);
   };
 
   const onSaveAsNewClick = () => {
     const newEventId = Date.now();
     const newEvent = saveEvent(newEventId);
 
+    server.addNewEvent(newEvent);
     setEventEdited(false);
-    console.log('Events saved as new!  Soon...');
-    console.log(newEvent);
   };
 
   const onChangeSpecialTags = (value: any) => {
@@ -240,8 +246,6 @@ const EventPage: React.FC = ({
     setEventDateTime(value[0].valueOf());
     setEventDeadline(value[1].valueOf());
   };
-
-  console.log(`render ${course} `);
 
   return (
     <div className={style.EventPage}>
@@ -264,16 +268,27 @@ const EventPage: React.FC = ({
               <Col>
                 <Switcher text={deadlineEventText} callback={toggleHasDeadline} isEnable={hasDeadline} />
               </Col>
-              <Col>
-                <Button onClick={onSaveClick} type="primary" disabled={!isEventEdited}>
-                  Save
-                </Button>
-              </Col>
-              <Col>
-                <Button onClick={onSaveAsNewClick} type="primary" disabled={!isEventEdited}>
-                  Save as new
-                </Button>
-              </Col>
+              {isAddNewEvent && (
+                <Col>
+                  <Button onClick={onSaveAsNewClick} type="primary" disabled={!isEventEdited}>
+                    Create new event
+                  </Button>
+                </Col>
+              )}
+              {!isAddNewEvent && (
+                <>
+                  <Col>
+                    <Button onClick={onSaveClick} type="primary" disabled={!isEventEdited}>
+                      Update
+                    </Button>
+                  </Col>
+                  <Col>
+                    <Button onClick={onSaveAsNewClick} type="primary" disabled={!isEventEdited}>
+                      Create new as copy
+                    </Button>
+                  </Col>
+                </>
+              )}
             </>
           )}
         </Row>
@@ -355,7 +370,7 @@ const EventPage: React.FC = ({
               ))}
             </Select>
           )}
-          {!isEditModeOn && <Tag color={getTagColorByEventType(eventType)}>{eventType}</Tag>}
+          {!isEditModeOn && <Tag color={getTagColorByEventType(eventType)}>{eventType.toUpperCase()}</Tag>}
         </Col>
 
         {isEditModeOn && (
@@ -366,6 +381,7 @@ const EventPage: React.FC = ({
             onChange={onChangeSpecialTags}
             tokenSeparators={[',']}
             allowClear
+            placeholder="Add special tags for event if it needs"
           >
             {SPECIAL_EVENT_TAGS.map((tag: string) => (
               <Option key={tag} value={tag}>
@@ -445,7 +461,7 @@ const EventPage: React.FC = ({
       </Row>
 
       <Row justify="space-between" align="middle" gutter={[16, 24]}>
-        {eventDescription && <Divider orientation="left">Event description</Divider>}
+        {(eventDescription || isEditModeOn) && <Divider orientation="left">Event description</Divider>}
         {!isEditModeOn && eventDescription && <ReactMarkdown source={eventDescription} />}
         {isEditModeOn && (
           <>

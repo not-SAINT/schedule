@@ -58,7 +58,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
     return (
       <>
         {tags.map((tag: string) => (
-          <Tag key={tag}>{tag.toUpperCase()}</Tag>
+          <Tag key={tag}>{tag}</Tag>
         ))}
       </>
     );
@@ -119,7 +119,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           title="Type"
           dataIndex="type"
           key="type"
-          render={(type) => <Tag color={getTagColorByEventType(type)}>{type}</Tag>}
+          render={(type) => <Tag color={getTagColorByEventType(type)}>{type.toUpperCase()}</Tag>}
           width="10%"
         />
         {columnsFilter.special && (
@@ -128,7 +128,6 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             dataIndex="specialTags"
             key="special"
             render={(specialTags) => renderSpecialTags(specialTags)}
-            width="9%"
           />
         )}
         <Column
@@ -137,28 +136,10 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           key="name"
           width="25%"
           render={(name, row: IEvent) => {
-            let event = { ...row };
+            const event = { ...row };
+            const isAddNewEvent = false;
 
-            event = {
-              id: '9',
-              name: 'webdev',
-              description: 'webdev',
-              descriptionUrl: 'https://github.com/rolling-scopes-school/tasks/blob/master/tasks/schedule.md',
-              type: 'task',
-              timeZone: '+3',
-              dateTime: 1604966266489,
-              place: 'Brest, dsfwe r^52.146793, 23.603838',
-              hours: '150',
-              comment: 'test #dkbjv sdfkghdjkg #egl jgh jflhj kldrtj#re gkhrekjgherwklj g@#4grlkhtjtl rjcomment',
-              deadline: 1605977266489,
-              isOpen: true,
-              isFeedbackEnabled: true,
-              specialTags: 'js,react,redux',
-              organizerId: 'yuliahope',
-              course: 'RS2020Q3',
-            };
-
-            return <Link to={{ pathname: `/task/${event.id}`, state: { event } }}>{name}</Link>;
+            return <Link to={{ pathname: `/task/${event.id}`, state: { event, isAddNewEvent } }}>{name}</Link>;
           }}
         />
         {columnsFilter.url && (

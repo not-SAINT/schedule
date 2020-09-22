@@ -1,3 +1,5 @@
+import { IEvent } from '../interfaces/serverData/serverData';
+
 export const DEFAULT_TIMEZONE = 180;
 export const LOCAL_SETTINGS = 'scheduleSettingsTeam34';
 export enum ScheduleView {
@@ -64,6 +66,7 @@ export const DEFAULT_PLACE = {
   lng: 27.566,
 };
 export const EVENT_TEMPLATE = {
+  id: `${Date.now()}`,
   name: 'new task',
   description: '',
   descriptionUrl: '',
@@ -78,7 +81,7 @@ export const EVENT_TEMPLATE = {
   lastUpdatedDate: 0,
   isOpen: false,
   isFeedbackEnabled: false,
-};
+} as IEvent;
 
 export const DATE_FORMAT = 'YYYY-MM-DD HH:mm';
 
