@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 import TaskUrlIco from '../TaskUrlIco';
 import { IEvent } from '../../interfaces/serverData/serverData';
-import { NOTIFICATION_PERIOD } from '../../constants/settings';
+import { NOTIFICATION_PERIOD, SCHEDULE_PAGE_SIZE } from '../../constants/settings';
 import { getTimeLeft, getSpecTags, getTagColorByEventType, getPlaceObject } from '../../helpers/schedule-utils';
 import useStores from '../../mobx/context';
 
@@ -28,6 +28,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
   } = useStores();
 
   let dataSource = isHideOldEvents ? data.filter(({ dateTime }) => dateTime >= currentTime) : data;
+
   dataSource = !isEditModeOn ? dataSource.filter(({ isOpen }) => isOpen && !isEditModeOn) : dataSource;
 
   const rowClasses = (dateTime: number, isOpen: boolean): string => {
@@ -50,7 +51,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
   const renderSpecialTags = (specialTags: string): React.ReactFragment => {
     const tags = getSpecTags(specialTags);
 
-    if (tags === '') {
+    if (tags === undefined) {
       return '';
     }
 
@@ -69,7 +70,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
         dataSource={dataSource}
         rowKey={(record) => record.id}
         rowClassName={({ dateTime, isOpen }) => rowClasses(dateTime, isOpen)}
-        pagination={{ hideOnSinglePage: true }}
+        pagination={{ hideOnSinglePage: true, pageSize: SCHEDULE_PAGE_SIZE }}
         rowSelection={rowSelection}
       >
         {columnsFilter.lastUpdated && (
@@ -133,9 +134,30 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
         <Column
           title="Name"
           dataIndex="name"
-          key="id"
+          key="name"
           width="25%"
-          render={(name, event: IEvent) => {
+          render={(name, row: IEvent) => {
+            let event = { ...row };
+
+            event = {
+              id: '9',
+              name: 'webdev',
+              description: 'webdev',
+              descriptionUrl: 'https://github.com/rolling-scopes-school/tasks/blob/master/tasks/schedule.md',
+              type: 'task',
+              timeZone: '+3',
+              dateTime: 1604966266489,
+              place: 'Brest, dsfwe r^52.146793, 23.603838',
+              hours: '150',
+              comment: 'test #dkbjv sdfkghdjkg #egl jgh jflhj kldrtj#re gkhrekjgherwklj g@#4grlkhtjtl rjcomment',
+              deadline: 1605977266489,
+              isOpen: true,
+              isFeedbackEnabled: true,
+              specialTags: 'js,react,redux',
+              organizerId: 'yuliahope',
+              course: 'RS2020Q3',
+            };
+
             return <Link to={{ pathname: `/task/${event.id}`, state: { event } }}>{name}</Link>;
           }}
         />
@@ -168,11 +190,10 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             )}
             dataIndex="hours"
             key="hours"
-            width="5%"
+            width="6%"
           />
         )}
         {columnsFilter.organizer && <Column title="Organizer" dataIndex="organizer" key="organizer" width="10%" />}
-        <Column title="ID" dataIndex="id" key="id" width="10%" />
         {columnsFilter.place && (
           <Column
             title="Place"

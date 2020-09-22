@@ -6,6 +6,7 @@ export enum ScheduleView {
   Calendar,
 }
 export const COUNT_VIEW_MODES = 3;
+export const SCHEDULE_PAGE_SIZE = 50;
 
 export const EVENT_TYPES = [
   'code jam',
@@ -25,7 +26,7 @@ export const SPECIAL_EVENT_TAGS = [
   'live',
   'record',
   'js',
-  'node',
+  'node.js',
   'react',
   'angular',
   'css',
@@ -62,3 +63,23 @@ export const DEFAULT_PLACE = {
   lat: 53.9,
   lng: 27.566,
 };
+export const EVENT_TEMPLATE = {
+  name: 'new task',
+  description: '',
+  descriptionUrl: '',
+  type: 'task',
+  specialTags: '',
+  timeZone: '',
+  dateTime: Date.now(),
+  place: '',
+  comment: '',
+  deadline: Date.now(),
+  hours: '',
+  lastUpdatedDate: 0,
+  isOpen: false,
+  isFeedbackEnabled: false,
+};
+
+export const DATE_FORMAT = 'YYYY-MM-DD HH:mm';
+
+export const COURSE_TYPES = ['RS2020Q1', 'RS2020Q3', 'React2020Q1', 'React2020Q3', 'NodeJS2020Q3'] as const;

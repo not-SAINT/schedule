@@ -1,6 +1,6 @@
 const TEAM_ID = '34';
 
-const urls = {
+export const urls = {
   getAllEvents: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/events`,
   addNewEvent: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/event`,
   getEventById: (eventId: string): string =>
@@ -19,4 +19,4 @@ const urls = {
     `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/organizer/${organizerId}`,
 };
 
-export default urls;
+export const ORGANIZER_URL = 'https://app.rs.school/profile?githubId=';
