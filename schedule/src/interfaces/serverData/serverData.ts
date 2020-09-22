@@ -15,6 +15,8 @@ export interface IEvent {
   isOpen: boolean;
   isVisible?: boolean;
   isFeedbackEnabled?: boolean;
+  organizerId?: string;
+  course?: string;
 }
 
 export interface IOrganizer {

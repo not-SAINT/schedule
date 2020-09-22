@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 import TaskUrlIco from '../TaskUrlIco';
 import { IEvent } from '../../interfaces/serverData/serverData';
-import { NOTIFICATION_PERIOD } from '../../constants/settings';
+import { NOTIFICATION_PERIOD, SCHEDULE_PAGE_SIZE } from '../../constants/settings';
 import { getTimeLeft, getSpecTags, getTagColorByEventType, getPlaceObject } from '../../helpers/schedule-utils';
 import useStores from '../../mobx/context';
 
@@ -28,6 +28,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
   } = useStores();
 
   let dataSource = isHideOldEvents ? data.filter(({ dateTime }) => dateTime >= currentTime) : data;
+
   dataSource = !isEditModeOn ? dataSource.filter(({ isOpen }) => isOpen && !isEditModeOn) : dataSource;
 
   const rowClasses = (dateTime: number, isOpen: boolean): string => {
@@ -50,14 +51,14 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
   const renderSpecialTags = (specialTags: string): React.ReactFragment => {
     const tags = getSpecTags(specialTags);
 
-    if (tags === '') {
+    if (tags === undefined) {
       return '';
     }
 
     return (
       <>
         {tags.map((tag: string) => (
-          <Tag key={tag}>{tag.toUpperCase()}</Tag>
+          <Tag key={tag}>{tag}</Tag>
         ))}
       </>
     );
@@ -69,7 +70,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
         dataSource={dataSource}
         rowKey={(record) => record.id}
         rowClassName={({ dateTime, isOpen }) => rowClasses(dateTime, isOpen)}
-        pagination={{ hideOnSinglePage: true }}
+        pagination={{ hideOnSinglePage: true, pageSize: SCHEDULE_PAGE_SIZE }}
         rowSelection={rowSelection}
       >
         {columnsFilter.lastUpdated && (
@@ -118,7 +119,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           title="Type"
           dataIndex="type"
           key="type"
-          render={(type) => <Tag color={getTagColorByEventType(type)}>{type}</Tag>}
+          render={(type) => <Tag color={getTagColorByEventType(type)}>{type.toUpperCase()}</Tag>}
           width="10%"
         />
         {columnsFilter.special && (
@@ -127,16 +128,18 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             dataIndex="specialTags"
             key="special"
             render={(specialTags) => renderSpecialTags(specialTags)}
-            width="9%"
           />
         )}
         <Column
           title="Name"
           dataIndex="name"
-          key="id"
+          key="name"
           width="25%"
-          render={(name, event: IEvent) => {
-            return <Link to={{ pathname: `/task/${event.id}`, state: { event } }}>{name}</Link>;
+          render={(name, row: IEvent) => {
+            const event = { ...row };
+            const isAddNewEvent = false;
+
+            return <Link to={{ pathname: `/task/${event.id}`, state: { event, isAddNewEvent } }}>{name}</Link>;
           }}
         />
         {columnsFilter.url && (
@@ -168,11 +171,10 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             )}
             dataIndex="hours"
             key="hours"
-            width="5%"
+            width="6%"
           />
         )}
         {columnsFilter.organizer && <Column title="Organizer" dataIndex="organizer" key="organizer" width="10%" />}
-        <Column title="ID" dataIndex="id" key="id" width="10%" />
         {columnsFilter.place && (
           <Column
             title="Place"

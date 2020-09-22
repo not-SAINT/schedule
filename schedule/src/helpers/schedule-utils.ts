@@ -1,4 +1,6 @@
-import { EVENT_PALETTE, TaskType, DEADLINE, DEFAULT_PLACE } from '../constants/settings';
+import moment from 'moment';
+
+import { EVENT_PALETTE, TaskType, DEADLINE, DEFAULT_PLACE, DATE_FORMAT } from '../constants/settings';
 import { IEvent } from '../interfaces/serverData/serverData';
 import { IPlace, IFilter } from '../interfaces/settings/settings';
 
@@ -8,11 +10,7 @@ export const getTimeLeft = (deadline: number): string => {
   const timeLeft = deadlineTime - now;
   const daysLeft = Math.trunc(timeLeft / 1000 / 3600 / 24);
 
-  if (deadline === undefined) {
-    return '';
-  }
-
-  if (timeLeft < 0) {
+  if (deadline === undefined || timeLeft < 0) {
     return '';
   }
 
@@ -23,12 +21,12 @@ export const getTimeLeft = (deadline: number): string => {
   return `Hours left: ${Math.trunc(timeLeft / 1000 / 3600)}`;
 };
 
-export const getSpecTags = (specialTags: string): string[] | '' => {
+export const getSpecTags = (specialTags: string): string[] | undefined => {
   if (!specialTags) {
-    return '';
+    return undefined;
   }
 
-  return specialTags.split(';');
+  return specialTags.split(',');
 };
 
 export const getFeedback = (comment: string): string[] | '' => {
@@ -102,4 +100,18 @@ export const filterEvents = (data: IEvent[], filter: IFilter): IEvent[] => {
   });
 
   return events;
+};
+
+export const getEventDates = (eventDateTime: number, eventDeadline: number): string => {
+  const text = `${new Date(eventDateTime).toLocaleString()}`;
+
+  if (eventDeadline > 0) {
+    return text.concat(` - ${new Date(eventDeadline).toLocaleString()}`);
+  }
+
+  return text;
+};
+
+export const getDateTime = (dateTime: number): moment.Moment => {
+  return moment(moment(dateTime).format(DATE_FORMAT));
 };

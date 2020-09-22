@@ -1,5 +1,5 @@
 import { getRequest, postRequest, putRequest, deleteRequest } from '../helpers/fetch-utils';
-import urls from '../constants/urls';
+import { urls } from '../constants/urls';
 
 import { IEvent, IOrganizer, IAllEvents, IAllOrganizers } from '../interfaces/serverData/serverData';
 
