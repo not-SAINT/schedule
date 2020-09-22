@@ -39,7 +39,6 @@ const Schedule = (): React.ReactElement => {
       schedule = <ScheduleTable data={data} />;
       break;
   }
-
   return schedule;
 };
 
