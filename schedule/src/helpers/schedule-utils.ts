@@ -115,3 +115,22 @@ export const getEventDates = (eventDateTime: number, eventDeadline: number): str
 export const getDateTime = (dateTime: number): moment.Moment => {
   return moment(moment(dateTime).format(DATE_FORMAT));
 };
+
+interface IDateParts {
+  day: number;
+  month: number;
+  time: string;
+}
+
+export const getDateParts = (dateTime: number): IDateParts => {
+  const date = new Date(dateTime);
+  const day = date.getDate();
+  const month = date.getMonth();
+  const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+  return {
+    day,
+    month,
+    time,
+  };
+};

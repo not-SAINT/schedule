@@ -1,54 +1,50 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Space, Tag } from 'antd';
+import { Calendar, Space, Tag, Typography, Col, Tooltip } from 'antd';
 
-// import { getTagColorByEventType } from '../../helpers/schedule-utils';
+import { getTagColorByEventType, getDateParts } from '../../helpers/schedule-utils';
 import { IEvent } from '../../interfaces/serverData/serverData';
-// import { TaskType } from '../../constants/settings';
+import { TaskType } from '../../constants/settings';
 import style from './ScheduleCalendar.module.scss';
 
 interface IScheduleCalendar {
   data: IEvent[];
 }
 
-const getReadableFormat = (value: number) => {
-  return String(value).padStart(2, '0');
-};
-
 const ScheduleCalendar = ({ data }: IScheduleCalendar): React.ReactElement => {
+  const { Text } = Typography;
   const dateCellRender = (value: any) => {
     return (
-      <ul className={style.Calendar__list}>
-        {data.map((item) => {
-          const date = new Date(item.dateTime);
-          const day = date.getDate();
-          const month = date.getMonth();
-          const hours = date.getHours();
-          const minutes = date.getMinutes();
-          if (day === value.date() && month === value.month()) {
-            return (
-              <li key={Math.random()} className={style.Calendar__list}>
-                <Space direction="vertical">
-                  <div>
-                    <Tag color="orange">{item.type}</Tag>
-                    <Tag color="orange">{`${getReadableFormat(hours)}:${getReadableFormat(minutes)}`}</Tag>
-                  </div>
-                  <Link to={{ pathname: `/task/${item.id}`, state: { item } }}>{item.name}</Link>
-                </Space>
-              </li>
-            );
+      <>
+        {data.map((item, index) => {
+          const { day, month, time } = getDateParts(item.dateTime);
+          const event = { ...item };
+          const key = `${event.id}__${index}`;
+          const color = getTagColorByEventType(item.type as TaskType);
+
+          if (day !== value.date() || month !== value.month()) {
+            return <></>;
           }
-          return <></>;
+
+          return (
+            <Space direction="vertical" key={key}>
+              <Tooltip title={event.name}>
+                <Link to={{ pathname: `/task/${event.id}`, state: { event } }}>
+                  <Col>
+                    <Text strong>{time}</Text>
+                    {' - '}
+                    <Tag color={color}>{event.type}</Tag>
+                  </Col>
+                </Link>
+              </Tooltip>
+            </Space>
+          );
         })}
-      </ul>
+      </>
     );
   };
 
-  return (
-    <div>
-      <Calendar className={style.Calendar} dateCellRender={dateCellRender} />
-    </div>
-  );
+  return <Calendar className={style.Calendar} dateCellRender={dateCellRender} />;
 };
 
 export default ScheduleCalendar;
