@@ -20,14 +20,17 @@ const millisecondsPerDay = 24 * 60 * 60 * 1000;
 
 const getStartAndEndWeekTime = (currentWeek: number) => {
   const now = new Date(Date.now() + currentWeek * week * millisecondsPerDay);
-  const day = now.getDay();
+  let day = now.getDay();
+  if (day === 0) {
+    day = 7;
+  }
 
   now.setHours(0);
   now.setMinutes(0);
   now.setSeconds(0);
   now.setMilliseconds(0);
   const startWeek = now.getTime() - millisecondsPerDay * (day - 1);
-  const endWeek = now.getTime() + millisecondsPerDay * (week - day + 2) - 1;
+  const endWeek = now.getTime() + millisecondsPerDay * (week - day + 1) - 1;
 
   return [startWeek, endWeek];
 };
@@ -40,7 +43,10 @@ const isCurrentWeek = (date: number, currentWeek: number) => {
 
 const panelClassName = (daySelected: number, currentWeek: number) => {
   const now = new Date(Date.now());
-  const dayNow = now.getDay();
+  let dayNow = now.getDay();
+  if (dayNow === 0) {
+    dayNow = 7;
+  }
 
   if (currentWeek > 0) {
     return 'Panel--future';
