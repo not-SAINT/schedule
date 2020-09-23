@@ -1,6 +1,7 @@
 import { IEvent } from '../interfaces/serverData/serverData';
 
-export const DEFAULT_TIMEZONE = 180;
+export const DEFAULT_TIMEZONE = +3;
+
 export const LOCAL_SETTINGS = 'scheduleSettingsTeam34';
 export enum ScheduleView {
   Table,
@@ -85,5 +86,7 @@ export const EVENT_TEMPLATE = {
 } as IEvent;
 
 export const DATE_FORMAT = 'YYYY-MM-DD HH:mm';
+export const DEFAULT_TIME_FORMAT = { hour: '2-digit', minute: '2-digit' };
+export const DEFAULT_DATE_FORMAT = { year: 'numeric', month: '2-digit', day: '2-digit' };
 
 export const COURSE_TYPES = ['RS2020Q1', 'RS2020Q3', 'React2020Q1', 'React2020Q3', 'NodeJS2020Q3'] as const;

@@ -30,6 +30,7 @@ import {
   getSpecTags,
   getEventDates,
   getDateTime,
+  getDateToString,
 } from '../../helpers/schedule-utils';
 import { FEEDBACK_LENGTH, SPECIAL_EVENT_TAGS, EVENT_TYPES, DATE_FORMAT, COURSE_TYPES } from '../../constants/settings';
 import server from '../../server/server';
@@ -418,41 +419,47 @@ const EventPage: React.FC = ({
       </Row>
 
       <Row justify="center" align="middle" gutter={[24, 16]}>
-        <Col>
-          <Space>
-            <Tooltip title="GitHub username">
-              <Text strong style={{ textAlign: 'center' }}>
-                {'Organizer: '}
-              </Text>
-            </Tooltip>
+        {(eventOrganizerId || isEditModeOn) && (
+          <Col>
+            <Space>
+              <Tooltip title="GitHub username">
+                <Text strong style={{ textAlign: 'center' }}>
+                  {'Organizer: '}
+                </Text>
+              </Tooltip>
 
-            {!isEditModeOn && eventOrganizerId && (
-              <>
-                <Link href={`${ORGANIZER_URL}${eventOrganizerId}`} target="_blank" style={{ textAlign: 'right' }}>
+              {!isEditModeOn && (
+                <>
+                  <Link href={`${ORGANIZER_URL}${eventOrganizerId}`} target="_blank" style={{ textAlign: 'right' }}>
+                    {eventOrganizerId}
+                  </Link>
+                </>
+              )}
+              {isEditModeOn && (
+                <Text strong editable={editOrganizer} style={{ textAlign: 'right' }}>
                   {eventOrganizerId}
-                </Link>
-              </>
-            )}
-            {isEditModeOn && (
-              <Text strong editable={editOrganizer} style={{ textAlign: 'right' }}>
-                {eventOrganizerId}
+                </Text>
+              )}
+            </Space>
+          </Col>
+        )}
+        {(eventHours || isEditModeOn) && (
+          <Col>
+            <Space>
+              <Text strong>{'Hours: '}</Text>
+              <Text editable={editEventHours} strong>
+                {eventHours}
               </Text>
-            )}
-          </Space>
-        </Col>
-        <Col>
-          <Space>
-            <Text strong>{'Hours: '}</Text>
-            <Text editable={editEventHours} strong>
-              {eventHours}
-            </Text>
-          </Space>
-        </Col>
-        <Col>
-          <Tooltip title={`Event deadline: ${new Date(eventDeadline).toLocaleString()}`}>
-            <Text strong>{getTimeLeft(eventDeadline)}</Text>
-          </Tooltip>
-        </Col>
+            </Space>
+          </Col>
+        )}
+        {eventDeadline > 0 && (
+          <Col>
+            <Tooltip title={`Event deadline: ${getDateToString(eventDeadline)}`}>
+              <Text strong>{getTimeLeft(eventDeadline)}</Text>
+            </Tooltip>
+          </Col>
+        )}
       </Row>
 
       <Row justify="center" align="middle" gutter={[16, 8]}>
