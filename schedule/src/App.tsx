@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Provider } from 'mobx-react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
@@ -17,6 +17,8 @@ const settings = new Settings();
 const events = new Events();
 
 const App = (): React.ReactElement => {
+  const scheduleRef = useRef<HTMLDivElement>(null);
+
   return (
     <Provider settings={settings} events={events}>
       <BrowserRouter>
@@ -26,8 +28,10 @@ const App = (): React.ReactElement => {
             path="/"
             component={() => (
               <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-                <ControlPanel />
-                <Schedule />
+                <ControlPanel refSchedule={scheduleRef} />
+                <div ref={scheduleRef}>
+                  <Schedule />
+                </div>
               </ErrorBoundary>
             )}
           />

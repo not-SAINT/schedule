@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import TaskUrlIco from '../TaskUrlIco';
 import { IEvent } from '../../interfaces/serverData/serverData';
 import { NOTIFICATION_PERIOD, SCHEDULE_PAGE_SIZE } from '../../constants/settings';
-import { getTimeLeft, getSpecTags, getTagColorByEventType, getPlaceObject } from '../../helpers/schedule-utils';
+import { getTimeLeft, getSpecTags, getTagColorByEventType, getPlaceObject, getFormatDate} from '../../helpers/schedule-utils';
 import useStores from '../../mobx/context';
 
 import style from './ScheduleTable.module.scss';
@@ -23,7 +23,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
   const currentTime = Date.now();
   const {
     settings: {
-      settings: { columnsFilter, isHideOldEvents, isEditModeOn },
+      settings: { columnsFilter, isHideOldEvents, isEditModeOn, timeZone },
     },
   } = useStores();
 
@@ -83,7 +83,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             dataIndex="lastUpdatedDate"
             key="lastUpdatedDate"
             render={(lastUpdatedDate) => (
-              <Tooltip title={`Last event update: ${new Date(lastUpdatedDate).toLocaleString()}`}>
+              <Tooltip title={`Last event update: ${getFormatDate(lastUpdatedDate, timeZone)}`}>
                 <span>
                   {currentTime - lastUpdatedDate < NOTIFICATION_PERIOD ? <BulbTwoTone twoToneColor="red" /> : ''}
                 </span>
@@ -96,7 +96,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           title="Date & time"
           dataIndex="dateTime"
           key="dateTime"
-          render={(dateTime: number) => new Date(dateTime).toLocaleString()}
+          render={(dateTime: number) => getFormatDate(dateTime, timeZone)}
           width="10%"
           sorter={(a: IEvent, b: IEvent) => b.dateTime - a.dateTime}
           sortDirections={['descend', 'ascend']}
