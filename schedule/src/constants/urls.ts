@@ -8,7 +8,7 @@ export const urls = {
   updateExistingEvent: (eventId: string): string =>
     `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/event/${eventId}`,
   deleteEventById: (eventId: string): string =>
-    `https://re-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/event/${eventId}`,
+    `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/event/${eventId}`,
   getAllOrganizers: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/organizers`,
   addNewOrganizer: (): string => `https://rs-react-schedule.firebaseapp.com/api/team/${TEAM_ID}/organizer`,
   getOrganizerById: (organizerId: string): string =>

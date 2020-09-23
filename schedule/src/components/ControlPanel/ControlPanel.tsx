@@ -34,56 +34,51 @@ const ControlPanel = () => {
         <Col className={colClasses} span={6}>
           <ScheduleViewMode />
         </Col>
-
-        {isTableView && (
-          <>
-            <Col className={colClasses} span={6}>
-              <Switcher text={oldEventsText} callback={toggleHideOldEvents} isEnable={isHideOldEvents} />
-            </Col>
-
-            <Col className={colClasses} span={6}>
-              <Switcher text={editText} callback={toggleEditModeSwitcher} isEnable={isEditModeOn} />
-            </Col>
-            {isEditModeOn && (
-              <Col className={colClasses} span={6}>
-                <Button type="primary">
-                  <Link to={{ pathname: `/task/${event.id}`, state: { event, isAddNewEvent } }}>Add new event</Link>
-                </Button>
-              </Col>
-            )}
-          </>
+        <Col className={colClasses} span={6}>
+          <Switcher text={oldEventsText} callback={toggleHideOldEvents} isEnable={isHideOldEvents} />
+        </Col>
+        <Col className={colClasses} span={6}>
+          <Switcher text={editText} callback={toggleEditModeSwitcher} isEnable={isEditModeOn} />
+        </Col>
+        {isEditModeOn && (
+          <Col className={colClasses} span={6}>
+            <Button type="primary">
+              <Link to={{ pathname: `/task/${event.id}`, state: { event, isAddNewEvent } }}>Add new event</Link>
+            </Button>
+          </Col>
         )}
       </Row>
-      {isTableView && (
-        <Collapse ghost>
-          <Panel header="Filters" key="1">
-            <Row gutter={[16, 8]}>
-              <Col className={colClasses}>
-                <Text strong>{'Course: '}</Text>
-                <Select showSearch onChange={setCourse} style={{ width: '150px' }} defaultValue={course}>
-                  {COURSE_TYPES.map((tag: string) => (
-                    <Option key={tag} value={tag}>
-                      {tag}
-                    </Option>
-                  ))}
-                </Select>
-              </Col>
-            </Row>
-            <Row gutter={[16, 8]}>
-              <Col className={colClasses}>
-                <Text strong>{'Tasks: '}</Text>
-                <Selector titles={tasksFilter} callback={setTaskFilter} placeholder="Select events type" />
-              </Col>
-            </Row>
+
+      <Collapse ghost>
+        <Panel header="Filters" key="1">
+          <Row gutter={[16, 8]}>
+            <Col className={colClasses}>
+              <Text strong>{'Course: '}</Text>
+              <Select showSearch onChange={setCourse} style={{ width: '150px' }} defaultValue={course}>
+                {COURSE_TYPES.map((tag: string) => (
+                  <Option key={tag} value={tag}>
+                    {tag}
+                  </Option>
+                ))}
+              </Select>
+            </Col>
+          </Row>
+          <Row gutter={[16, 8]}>
+            <Col className={colClasses}>
+              <Text strong>{'Tasks: '}</Text>
+              <Selector titles={tasksFilter} callback={setTaskFilter} placeholder="Select events type" />
+            </Col>
+          </Row>
+          {isTableView && (
             <Row>
               <Col className={colClasses}>
                 <Text strong>{'Columns: '}</Text>
                 <Selector titles={columnsFilter} callback={setColumnFilter} placeholder="Select columns" />
               </Col>
             </Row>
-          </Panel>
-        </Collapse>
-      )}
+          )}
+        </Panel>
+      </Collapse>
     </div>
   );
 };

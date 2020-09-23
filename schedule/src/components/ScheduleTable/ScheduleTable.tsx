@@ -7,7 +7,7 @@ import classNames from 'classnames';
 
 import TaskUrlIco from '../TaskUrlIco';
 import { IEvent } from '../../interfaces/serverData/serverData';
-import { NOTIFICATION_PERIOD, SCHEDULE_PAGE_SIZE } from '../../constants/settings';
+import { NOTIFICATION_PERIOD, PERIOD_IN_DAYS, SCHEDULE_PAGE_SIZE } from '../../constants/settings';
 import { getTimeLeft, getSpecTags, getTagColorByEventType, getPlaceObject } from '../../helpers/schedule-utils';
 import useStores from '../../mobx/context';
 
@@ -76,7 +76,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
         {columnsFilter.lastUpdated && (
           <Column
             title={() => (
-              <Tooltip title="Did event update this week?">
+              <Tooltip title={`Did event update last ${PERIOD_IN_DAYS} days?`}>
                 <InfoCircleOutlined />
               </Tooltip>
             )}
