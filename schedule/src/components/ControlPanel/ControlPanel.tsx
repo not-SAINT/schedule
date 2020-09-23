@@ -63,34 +63,13 @@ const ControlPanel = observer(({ refSchedule }: { refSchedule: any }) => {
                 </Button>
               </Col>
             )}
-
             <Col>
-              <Select defaultValue={timeZone} style={{ width: 120 }} onChange={onChangeTimeZone}>
-                <Option value={-12}>GMT-12</Option>
-                <Option value={-11}>GMT-11</Option>
-                <Option value={-10}>GMT-10</Option>
-                <Option value={-9}>GMT-9</Option>
-                <Option value={-8}>GMT-8</Option>
-                <Option value={-7}>GMT-7</Option>
-                <Option value={-6}>GMT-6</Option>
-                <Option value={-5}>GMT-5</Option>
-                <Option value={-4}>GMT-4</Option>
-                <Option value={-3}>GMT-3</Option>
-                <Option value={-2}>GMT-2</Option>
-                <Option value={-1}>GMT-1</Option>
-                <Option value={-0}>GMT-0</Option>
-                <Option value={+1}>GMT+1</Option>
-                <Option value={+2}>GMT+2</Option>
-                <Option value={+3}>GMT+3</Option>
-                <Option value={+4}>GMT+4</Option>
-                <Option value={+5}>GMT+5</Option>
-                <Option value={+6}>GMT+6</Option>
-                <Option value={+7}>GMT+7</Option>
-                <Option value={+8}>GMT+8</Option>
-                <Option value={+9}>GMT+9</Option>
-                <Option value={+10}>GMT+10</Option>
-                <Option value={+11}>GMT+11</Option>
-                <Option value={+12}>GMT+12</Option>
+              <Select defaultValue={timeZone} style={{ width: 230 }} onChange={onChangeTimeZone}>
+                <Option value={+1}>(GMT+1) London</Option>
+                <Option value={+2}>(GMT+2) Warsaw</Option>
+                <Option value={+3}>(GMT+4) Minsk, Kiev, Moscow</Option>
+                <Option value={+4}>(GMT+4) Volgograd, Tbilisi</Option>
+                <Option value={+5}>(GMT+5) Yekateringurg, Tashkent</Option>
               </Select>
             </Col>
             <Row>

@@ -8,7 +8,13 @@ import classNames from 'classnames';
 import TaskUrlIco from '../TaskUrlIco';
 import { IEvent } from '../../interfaces/serverData/serverData';
 import { NOTIFICATION_PERIOD, SCHEDULE_PAGE_SIZE } from '../../constants/settings';
-import { getTimeLeft, getSpecTags, getTagColorByEventType, getPlaceObject, getFormatDate} from '../../helpers/schedule-utils';
+import {
+  getTimeLeft,
+  getSpecTags,
+  getTagColorByEventType,
+  getPlaceObject,
+  getFormatDate,
+} from '../../helpers/schedule-utils';
 import useStores from '../../mobx/context';
 
 import style from './ScheduleTable.module.scss';

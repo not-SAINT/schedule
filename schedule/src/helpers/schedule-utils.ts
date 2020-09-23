@@ -133,15 +133,15 @@ export const getDateParts = (dateTime: number): IDateParts => {
     month,
     time,
   };
-
 };
 
-export const getFormatDate = (dateNumb: number, timeZone: number) => {
+export const getFormatDate = (dateNumb: number, timeZone: number): string => {
   const date = new Date(dateNumb + timeZone * 3600 * 1000);
   const month = date.getUTCMonth() + 1;
   const day = date.getUTCDate();
   const year = date.getUTCFullYear();
   const hour = date.getUTCHours();
   const minutes = date.getUTCMinutes();
+
   return `${month}/${day}/${year}${'\u00A0'}${hour}:${minutes}`;
 };
