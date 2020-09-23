@@ -15,7 +15,7 @@ import {
   Input,
   DatePicker,
 } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, DeleteOutlined } from '@ant-design/icons';
 import ReactMarkdown from 'react-markdown';
 
 import Switcher from '../Switcher/Switcher';
@@ -230,6 +230,11 @@ const EventPage: React.FC = ({
     setEventEdited(false);
   };
 
+  const onDeleteClick = () => {
+    server.deleteEventById(id);
+    history.push('/');
+  };
+
   const onChangeSpecialTags = (value: any) => {
     setEventSpecialTags(`${value}`);
   };
@@ -286,6 +291,19 @@ const EventPage: React.FC = ({
                     <Button onClick={onSaveAsNewClick} type="primary" disabled={!isEventEdited}>
                       Create new as copy
                     </Button>
+                  </Col>
+                  <Col>
+                    <Tooltip title="Delete event">
+                      <Popconfirm
+                        placement="leftBottom"
+                        title="Are you sure you want to delete this event?"
+                        onConfirm={onDeleteClick}
+                        okText="Yes"
+                        cancelText="No"
+                      >
+                        <Button shape="circle" icon={<DeleteOutlined />} />
+                      </Popconfirm>
+                    </Tooltip>
                   </Col>
                 </>
               )}

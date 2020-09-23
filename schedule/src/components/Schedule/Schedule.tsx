@@ -12,7 +12,8 @@ import styles from './Schedule.module.scss';
 
 const Schedule = (): React.ReactElement => {
   const { settings, events } = useStores();
-  const { viewMode, tasksFilter, course } = settings.settings;
+  const { viewMode, tasksFilter, course, isHideOldEvents } = settings.settings;
+  const currentTime = Date.now();
 
   let schedule = null;
 
@@ -27,6 +28,7 @@ const Schedule = (): React.ReactElement => {
   let data = filterEvents(events.events, tasksFilter);
 
   data = data.filter(({ course: eventCourse }) => eventCourse === course);
+  data = isHideOldEvents ? data.filter(({ dateTime }) => dateTime >= currentTime) : data;
 
   switch (viewMode) {
     case 1:
