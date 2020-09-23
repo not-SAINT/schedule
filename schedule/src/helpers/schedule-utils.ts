@@ -1,6 +1,14 @@
 import moment from 'moment';
 
-import { EVENT_PALETTE, TaskType, DEADLINE, DEFAULT_PLACE, DATE_FORMAT } from '../constants/settings';
+import {
+  EVENT_PALETTE,
+  TaskType,
+  DEADLINE,
+  DEFAULT_PLACE,
+  DATE_FORMAT,
+  DEFAULT_DATE_FORMAT,
+  DEFAULT_TIME_FORMAT,
+} from '../constants/settings';
 import { IEvent } from '../interfaces/serverData/serverData';
 import { IPlace, IFilter } from '../interfaces/settings/settings';
 
@@ -102,14 +110,22 @@ export const filterEvents = (data: IEvent[], filter: IFilter): IEvent[] => {
   return events;
 };
 
+export const getDateToString = (date: number): string => {
+  const start = new Date(date);
+  const startDate = start.toLocaleDateString([], DEFAULT_DATE_FORMAT);
+  const startTime = start.toLocaleTimeString([], DEFAULT_TIME_FORMAT);
+
+  return `${startDate} ${startTime}`;
+};
+
 export const getEventDates = (eventDateTime: number, eventDeadline: number): string => {
-  const text = `${new Date(eventDateTime).toLocaleString()}`;
+  const result = getDateToString(eventDateTime);
 
   if (eventDeadline > 0) {
-    return text.concat(` - ${new Date(eventDeadline).toLocaleString()}`);
+    return result.concat(` - ${getDateToString(eventDeadline)}`);
   }
 
-  return text;
+  return result;
 };
 
 export const getDateTime = (dateTime: number): moment.Moment => {
@@ -126,7 +142,7 @@ export const getDateParts = (dateTime: number): IDateParts => {
   const date = new Date(dateTime);
   const day = date.getDate();
   const month = date.getMonth();
-  const time = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const time = date.toLocaleTimeString([], DEFAULT_TIME_FORMAT);
 
   return {
     day,
@@ -137,11 +153,11 @@ export const getDateParts = (dateTime: number): IDateParts => {
 
 export const getFormatDate = (dateNumb: number, timeZone: number): string => {
   const date = new Date(dateNumb + timeZone * 3600 * 1000);
-  const month = date.getUTCMonth() + 1;
-  const day = date.getUTCDate();
+  const month = `${date.getUTCMonth() + 1}`.padStart(2, '0');
+  const day = `${date.getUTCDate()}`.padStart(2, '0');
   const year = date.getUTCFullYear();
-  const hour = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
+  const hour = `${date.getUTCHours()}`.padStart(2, '0');
+  const minutes = `${date.getUTCMinutes()}`.padStart(2, '0');
 
-  return `${month}/${day}/${year}${'\u00A0'}${hour}:${minutes}`;
+  return `${day}.${month}.${year} ${hour}:${minutes}`;
 };

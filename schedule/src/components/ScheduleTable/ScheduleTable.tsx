@@ -103,7 +103,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
           dataIndex="dateTime"
           key="dateTime"
           render={(dateTime: number) => getFormatDate(dateTime, timeZone)}
-          width="10%"
+          width="9%"
           sorter={(a: IEvent, b: IEvent) => b.dateTime - a.dateTime}
           sortDirections={['descend', 'ascend']}
           defaultSortOrder="descend"
@@ -115,7 +115,7 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
             key="timeLeft"
             width="10%"
             render={(deadline: number) => (
-              <Tooltip title={`Deadline: ${new Date(deadline).toLocaleString()}`}>
+              <Tooltip title={`Deadline: ${getFormatDate(deadline, timeZone)}`}>
                 <span>{getTimeLeft(deadline)}</span>
               </Tooltip>
             )}
