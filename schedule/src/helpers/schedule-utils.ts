@@ -101,7 +101,6 @@ export const filterEvents = (data: IEvent[], filter: IFilter): IEvent[] => {
   let events = data;
 
   const excludedEventTypes = Object.keys(filter).filter((type) => !filter[type]);
-
   excludedEventTypes.forEach((key) => {
     events = events.filter(({ type }) => type !== key);
     return events;

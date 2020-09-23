@@ -1,0 +1,86 @@
+.Buttons {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+
+  button {
+    cursor: pointer;
+    padding: 25px;
+    width: 100px;
+  }
+
+  &--left {
+    clip-path: polygon(40% 0%, 40% 20%, 100% 20%, 100% 80%, 40% 80%, 40% 100%, 0% 50%);
+  }
+
+  &--right {
+    clip-path: polygon(0% 20%, 60% 20%, 60% 0%, 100% 50%, 60% 100%, 60% 80%, 0% 80%);
+  }
+}
+
+.Dates {
+  display: flex;
+  justify-content: center;
+
+  span {
+    margin: 0 5px;
+  }
+}
+
+.Panel {
+  &--current {
+    background-color: #ffd591;
+  }
+
+  &--future {
+    background-color: #d9f7be;
+  }
+
+  &--past {
+    background-color: #fff1f0;
+    opacity: 0.5;
+  }
+}
+
+.ListTable {
+  border-collapse: collapse;
+  margin: 0 auto;
+  width: 100%;
+
+  &--date {
+    width: 15%;
+  }
+
+  &--type {
+    width: 15%;
+  }
+
+  &--name {
+    width: 70%;
+  }
+
+  th {
+    border-bottom: 1px solid #f0f0f0;
+    padding: 5px 20px;
+    text-align: center;
+  }
+}
+
+.Day {
+  margin-right: 10px;
+}
+
+.Collapse {
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.List {
+  padding: 0 100px;
+}
+
+@media (max-width: 600px) {
+  .List {
+    padding: 0;
+  }
+}
