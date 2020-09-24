@@ -44,11 +44,32 @@ class Events {
       });
     }
   }
+
+  assimilateEvent(event: IEvent) {
+    runInAction(() => {
+      if (this.events !== null) {
+        this.events = this.events.filter((el) => el.id !== event.id);
+        this.events.push(event);
+      } else {
+        this.events = [event];
+      }
+    });
+  }
+
+  delEventById(id: string) {
+    runInAction(() => {
+      if (this.events !== null) {
+        this.events = this.events.filter((el) => el.id !== id);
+      }
+    });
+  }
 }
 
 decorate(Events, {
   events: observable,
   getEvents: action.bound,
+  assimilateEvent: action.bound,
+  delEventById: action.bound,
 });
 
 export default Events;
