@@ -79,6 +79,7 @@ const EventPage: React.FC = ({
       settings: { isEditModeOn },
       toggleEditModeSwitcher,
     },
+    events: { assimilateEvent, delEventById },
   } = useStores();
 
   const [eventName, setEventName] = useState(name);
@@ -220,19 +221,29 @@ const EventPage: React.FC = ({
     const updatedEvent = saveEvent();
 
     server.updateExistingEvent(id, updatedEvent);
+
+    assimilateEvent(updatedEvent);
+
     setEventEdited(false);
   };
 
-  const onSaveAsNewClick = () => {
-    const newEventId = Date.now();
-    const newEvent = saveEvent(newEventId);
+  const onSaveAsNewClick = async () => {
+    const newTempEventId = Date.now();
+    const newTempEvent = saveEvent(newTempEventId);
 
-    server.addNewEvent(newEvent);
+    const newRawEventId = await server.addNewEvent(newTempEvent);
+    const newEvent = saveEvent(newRawEventId.id);
+
+    assimilateEvent(newEvent);
+
     setEventEdited(false);
   };
 
   const onDeleteClick = () => {
     server.deleteEventById(id);
+
+    delEventById(id);
+
     history.push('/');
   };
 
