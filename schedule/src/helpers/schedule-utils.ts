@@ -160,3 +160,11 @@ export const getFormatDate = (dateNumb: number, timeZone: number): string => {
 
   return `${day}.${month}.${year} ${hour}:${minutes}`;
 };
+
+export const getFormatTime = (dateNumb: number, timeZone: number): string => {
+  const date = new Date(dateNumb + timeZone * 3600 * 1000);
+  const hour = `${date.getUTCHours()}`.padStart(2, '0');
+  const minutes = `${date.getUTCMinutes()}`.padStart(2, '0');
+
+  return `${hour}:${minutes}`;
+};
