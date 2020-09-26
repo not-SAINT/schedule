@@ -48,13 +48,13 @@ const ControlPanel = ({ refSchedule }: { refSchedule: any }) => {
           <Select defaultValue={timeZone} style={{ width: 230 }} onChange={onChangeTimeZone}>
             <Option value={+1}>(GMT+1) London</Option>
             <Option value={+2}>(GMT+2) Warsaw</Option>
-            <Option value={+3}>(GMT+4) Minsk, Kiev, Moscow</Option>
+            <Option value={+3}>(GMT+3) Minsk, Kiev, Moscow</Option>
             <Option value={+4}>(GMT+4) Volgograd, Tbilisi</Option>
             <Option value={+5}>(GMT+5) Yekateringurg, Tashkent</Option>
           </Select>
         </Col>
         <Col>
-          <Tooltip title="Print to Pdf">
+          <Tooltip title="Save to Pdf">
             <span>
               <ExportAsPdf label=".pdf" orientation="portrait" course={course} ref={refSchedule} />
             </span>

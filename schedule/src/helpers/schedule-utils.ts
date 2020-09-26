@@ -101,7 +101,6 @@ export const filterEvents = (data: IEvent[], filter: IFilter): IEvent[] => {
   let events = data;
 
   const excludedEventTypes = Object.keys(filter).filter((type) => !filter[type]);
-
   excludedEventTypes.forEach((key) => {
     events = events.filter(({ type }) => type !== key);
     return events;
@@ -160,4 +159,12 @@ export const getFormatDate = (dateNumb: number, timeZone: number): string => {
   const minutes = `${date.getUTCMinutes()}`.padStart(2, '0');
 
   return `${day}.${month}.${year} ${hour}:${minutes}`;
+};
+
+export const getFormatTime = (dateNumb: number, timeZone: number): string => {
+  const date = new Date(dateNumb + timeZone * 3600 * 1000);
+  const hour = `${date.getUTCHours()}`.padStart(2, '0');
+  const minutes = `${date.getUTCMinutes()}`.padStart(2, '0');
+
+  return `${hour}:${minutes}`;
 };

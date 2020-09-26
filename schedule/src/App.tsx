@@ -9,18 +9,20 @@ import ControlPanel from './components/ControlPanel';
 import Schedule from './components/Schedule';
 import Settings from './mobx/store/settings';
 import Events from './mobx/store/events';
+import Organizers from './mobx/store/organizers';
 
 import 'antd/dist/antd.css';
 import './App.css';
 
 const settings = new Settings();
 const events = new Events();
+const organizers = new Organizers();
 
 const App = (): React.ReactElement => {
   const scheduleRef = useRef<HTMLDivElement>(null);
 
   return (
-    <Provider settings={settings} events={events}>
+    <Provider settings={settings} events={events} organizers={organizers}>
       <BrowserRouter>
         <Switch>
           <Route

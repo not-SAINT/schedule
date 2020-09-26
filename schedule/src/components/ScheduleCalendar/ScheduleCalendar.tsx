@@ -1,10 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { observer } from 'mobx-react';
 import { Calendar, Space, Tag, Typography, Col, Tooltip } from 'antd';
 
-import { getTagColorByEventType, getDateParts } from '../../helpers/schedule-utils';
+import { getTagColorByEventType, getDateParts, getFormatTime } from '../../helpers/schedule-utils';
 import { IEvent } from '../../interfaces/serverData/serverData';
 import { TaskType } from '../../constants/settings';
+import useStores from '../../mobx/context';
+
 import style from './ScheduleCalendar.module.scss';
 
 interface IScheduleCalendar {
@@ -13,11 +16,18 @@ interface IScheduleCalendar {
 
 const ScheduleCalendar = ({ data }: IScheduleCalendar): React.ReactElement => {
   const { Text } = Typography;
+  const {
+    settings: {
+      settings: { timeZone },
+    },
+  } = useStores();
+
   const dateCellRender = (value: any) => {
     return (
       <>
         {data.map((item, index) => {
-          const { day, month, time } = getDateParts(item.dateTime);
+          const { day, month } = getDateParts(item.dateTime);
+          const time = getFormatTime(item.dateTime, timeZone);
           const event = { ...item };
           const key = `${event.id}__${index}`;
           const color = getTagColorByEventType(item.type as TaskType);
@@ -47,4 +57,4 @@ const ScheduleCalendar = ({ data }: IScheduleCalendar): React.ReactElement => {
   return <Calendar className={style.Calendar} dateCellRender={dateCellRender} />;
 };
 
-export default ScheduleCalendar;
+export default observer(ScheduleCalendar);
