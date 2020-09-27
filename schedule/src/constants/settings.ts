@@ -37,7 +37,6 @@ export const SPECIAL_EVENT_TAGS = [
   'git',
   'markdown',
   'task',
-  'test',
 ];
 
 export type TaskType = typeof EVENT_TYPES[number];
