@@ -21,6 +21,7 @@ const millisecondsPerDay = 24 * 60 * 60 * 1000;
 const getStartAndEndWeekTime = (currentWeek: number) => {
   const now = new Date(Date.now() + currentWeek * week * millisecondsPerDay);
   const day = now.getDay();
+
   now.setHours(0);
   now.setMinutes(0);
   now.setSeconds(0);
