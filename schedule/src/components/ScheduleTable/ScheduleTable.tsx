@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { observer } from 'mobx-react';
 import { Table, Tag, Tooltip } from 'antd';
@@ -24,7 +24,6 @@ interface IScheduleTable {
 }
 
 const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
-  const [selectedRows, setSelectRowKeys] = useState([] as string[] | number[]);
   const { Column } = Table;
   const currentTime = Date.now();
   const {
@@ -42,16 +41,6 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
       { [style['ScheduleTable--disabled-row']]: dateTime < currentTime },
       { [style['ScheduleTable--closed-row']]: !isOpen },
     );
-  };
-
-  const onSelectRows = (selectedRowKeys: any) => {
-    setSelectRowKeys(selectedRowKeys);
-  };
-
-  const rowSelection = {
-    selectedRows,
-    columnWidth: '25px',
-    onChange: onSelectRows,
   };
 
   const renderSpecialTags = (specialTags: string): React.ReactFragment => {
@@ -77,7 +66,6 @@ const ScheduleTable = ({ data }: IScheduleTable): React.ReactElement => {
         rowKey={(record) => record.id}
         rowClassName={({ dateTime, isOpen }) => rowClasses(dateTime, isOpen)}
         pagination={{ hideOnSinglePage: true, pageSize: SCHEDULE_PAGE_SIZE }}
-        rowSelection={rowSelection}
       >
         {columnsFilter.lastUpdated && (
           <Column
