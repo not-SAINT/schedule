@@ -30,7 +30,7 @@ const ControlPanel = ({ refSchedule }: { refSchedule: any }) => {
   const oldEventsText = isHideOldEvents ? 'Hide old events' : 'Show old events';
   const editText = isEditModeOn ? 'Edit: on' : 'Edit: off';
 
-  const event = EVENT_TEMPLATE;
+  const event = { ...EVENT_TEMPLATE, course };
   const isAddNewEvent = true;
   const isTableView = viewMode === ScheduleView.Table;
 
